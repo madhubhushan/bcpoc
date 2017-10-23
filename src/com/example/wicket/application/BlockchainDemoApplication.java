@@ -6,8 +6,6 @@ import org.apache.wicket.protocol.http.WebApplication;
 
 import com.example.wicket.pages.BlockchainDemoMainPage;
 import com.example.wicket.pages.BlockchainDemoMainPage_v1;
-import com.example.wicket.pages.BlockchainDemoMainPage_v2;
-import com.example.wicket.pages.BlockchainDemoMainPage_v3;
 
 public class BlockchainDemoApplication extends WebApplication {
 
@@ -28,8 +26,6 @@ public class BlockchainDemoApplication extends WebApplication {
 		super.init();
 		mountPage("/main", BlockchainDemoMainPage.class);
 		mountPage("/v1", BlockchainDemoMainPage_v1.class);
-		mountPage("/v2", BlockchainDemoMainPage_v2.class);
-		mountPage("/v3", BlockchainDemoMainPage_v3.class);
 		
 		getRequestCycleSettings().setGatherExtendedBrowserInfo(true);
 	}

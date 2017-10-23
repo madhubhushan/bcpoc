@@ -20,8 +20,8 @@ import com.google.gson.Gson;
 
 public class BlockChainRestServiceHelper
 {
-	private static final String CHAINCODE_POST_URL = "https://a4c944ea0633486fb5bfa32a8559c202-vp0.us.blockchain.ibm.com:5001/chaincode";
-	private static final String TRANSACTIONS_GET_URL = "https://a4c944ea0633486fb5bfa32a8559c202-vp0.us.blockchain.ibm.com:5001/transactions/";
+	private static final String CHAINCODE_POST_URL = "http://digitalhome.tcsinsurancelab.com:7050/chaincode";
+	private static final String TRANSACTIONS_GET_URL = "http://digitalhome.tcsinsurancelab.com:7050/transactions/";
 	
 	private static Gson gson = new Gson();
 
