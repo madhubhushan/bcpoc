@@ -1,0 +1,63 @@
+@CHARSET "UTF-8";
+
+.column-header {
+	width: 100%;
+	text-align: center;
+	font-size: 1.5em;
+	color: white;
+	font-family: 'Merriweather', serif;
+}
+
+.plus-img {
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
+	width: 80px;
+	height: 80px;
+	text-align: center;
+	opacity: 0.5;
+	z-index: 10;
+}
+
+.plus-img:HOVER {
+	opacity: 1;
+}
+
+.transaction-details {
+	box-shadow: -7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+	width: 400px;
+	background-color: #FFFFFF;
+	word-wrap: break-word;
+	border: 2px solid #CCCCCC;
+}
+
+.error-transaction {
+	box-shadow: -7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+	width: 400px;
+	background-color: #FFC2B3;
+	word-wrap: break-word;
+	border: 2px solid #CC0000;
+}
+
+.transaction-details-row {
+	width: 100%;
+	height: 15vh;
+	background-color: #808000;
+	white-space: nowrap;
+}
+
+.transaction-block-header {
+	width: 100%;
+	background-color: #264D00;
+	color: #FFFFFF;
+	border-radius: 0 0 5px 0;
+}
+
+.error-transaction .transaction-block-header {
+	background-color: #CC0000;
+}
+
+/* Modal panel styles */
+.wicket-mask-dark {
+	opacity: 0.3;
+}

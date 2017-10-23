@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html
+xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+<head>
+  <meta charset="ISO-8859-1">
+  
+  <wicket:head>
+  <wicket:link>
+    <link rel="stylesheet" type="text/css" href="BlockchainDemoMainPage_v2.css"/>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Droid+Serif|MontSerrat|Raleway|Merriweather" />
+    <link rel="stylesheet" href="https://unpkg.com/simplebar@2.1.0/dist/simplebar.css" />
+  </wicket:link>
+
+<script src="https://unpkg.com/simplebar@2.1.0/dist/simplebar.js"></script>
+<script type="text/javascript">
+	function allowDrop(ev) {
+	  ev.preventDefault();
+	}
+	
+	function drag(ev) {
+	  ev.dataTransfer.setData("text", ev.target.id);
+	  var parentId = ev.target.parentElement.id;
+	  ev.dataTransfer.setData("parent", parentId);
+	}
+	
+	var source;
+	var destination;
+	function drop(ev) {
+	  ev.preventDefault();
+	  var data = ev.dataTransfer.getData("text");
+	  source = ev.dataTransfer.getData("parent");
+	  destination = ev.target.id;
+	  if(((source.includes('hondaCarsListRefresingView') || source.includes('toyotaCarsListRefresingView')) && (destination === 'majorWorldContainer' || destination === 'hillsideContainer')) 
+			  || ((source.includes('majorWorldCarsListRefresingView') || source.includes('hillsideCarsListRefresingView')) && (destination === 'jackContainer' || destination === 'roseContainer' || destination === 'romeoContainer' || destination === 'julietContainer'))    
+			  || ((source.includes('jackCarsListRefresingView') || source.includes('roseCarsListRefresingView') || source.includes('romeoCarsListRefresingView') || source.includes('julietCarsListRefresingView')) && (destination === 'euroAutoWorksContainer' || destination === 'autoCareEastCarsContainer'))    
+			  || ((source.includes('euroAutoWorksCarsListRefresingView') || source.includes('AutoCareEastCarsListRefresingView')) && (destination === 'usaaContainer' || destination === 'geicoContainer'))
+			  || ((source.includes('jackCarsListRefresingView') || source.includes('roseCarsListRefresingView') || source.includes('romeoCarsListRefresingView') || source.includes('julietCarsListRefresingView')) && (destination === 'jackContainer' || destination === 'roseContainer' || destination === 'romeoContainer' || destination === 'julietContainer'))) 
+	  {
+	    ev.target.appendChild(document.getElementById(data));
+	  }
+	}
+</script>
+
+<style>
+
+</style>
+</wicket:head>
+
+</head>
+
+<body style="margin:0px;">
+  <div style="height:10vh; background-color: #333300; display: table; width: 100%; text-align: center;">
+    <h1 style="margin: 0px; font-family: 'Droid Serif', cursive; color: #FFFFFF; display: table-cell; vertical-align: middle;">Vehicle Blockchain </h1>
+  </div>
+  
+  <div wicket:id="assetTransactionContainer" style="width= 100%; height: 75vh; background-color: #EEEEEE;">
+    <div style="width: 33%;display: inline-block;height: 100%;">
+      <div style="height: 49%;position: relative;">
+        <div style="position:absolute;left: 2px;top:2px; width:48%;height: 90%;border: 2px dashed #9875AB;background-color:#FFF; border-radius: 10px;">
+          <div style="background-image: url(resources/images/Manufacturer_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;">
+            <div class="column-header" style="background-color: #9875AB;">Honda</div>
+            <div data-simplebar style="height: 90%;">
+	            <span wicket:id="hondaCarsListRefresingView">
+	              <img wicket:id="hondaCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	            </span>
+            </div>
+            <a wicket:id="createHondaCarLink">
+              <img src="resources/images/Plus.png" class="plus-img" />
+            </a>
+          </div>
+          <a href="#" wicket:id="getHondaRecallVehicleLink">
+         	 <span class="link-big"> Recall Vehicles </span>
+       	  </a>
+        </div>
+       	<div wicket:id="getRecallVehicleModalWindow"></div>
+       	<div wicket:id="errorMessageModalWindow"></div>
+        <div style="position:absolute;right: 2px;top:2px; width:48%;height: 90%;border: 2px dashed #9875AB;background-color:#FFF;border-radius: 10px;">
+          <div style="background-image: url(resources/images/Manufacturer_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;">
+            <div class="column-header" style="background-color: #9875AB;">Toyota</div>
+            <div data-simplebar style="height: 90%;">
+	            <span wicket:id="toyotaCarsListRefresingView">
+	              <img wicket:id="toyotaCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	            </span>
+            </div>
+            <a wicket:id="createToyotaCarLink">
+              <img src="resources/images/Plus.png" class="plus-img" />
+            </a>
+          </div>
+          <a href="#" wicket:id="getToyotaRecallVehicleLink">
+         	<span class="link-big"> Recall Vehicles </span>
+         </a>
+        </div>
+      </div>
+      <div style="height: 48%;margin-top: 5px;position: relative;">
+        <div style="position:absolute;left: 2px;top:2px; width:48%;height: 90%;border: 2px dashed #E1B459;background-color:#FFF; border-radius: 10px;">
+          <div wicket:id="majorWorldContainer" style="background-image: url(resources/images/Auto_Dealer_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="column-header" style="background-color: #E1B459;">Majorworld</div>
+            <div data-simplebar style="height: 90%;">
+	            <span wicket:id="majorWorldCarsListRefresingView">
+	              <img wicket:id="majorWorldCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	            </span>
+            </div>
+          </div>
+          <!-- <a href="#" wicket:id="getVehicleDetails">
+         	 <span class="link-big"> Get Vehicle Details </span>
+       	  </a> 
+       	  <div wicket:id="vehicleDetailsModalWindow"></div> -->								
+        </div>
+        <div style="position:absolute;right: 2px;top:2px; width:48%;height: 90%;border: 2px dashed #E1B459;background-color:#FFF; border-radius: 10px;">
+          <div wicket:id="hillsideContainer" style="background-image: url(resources/images/Auto_Dealer_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="column-header" style="background-color: #E1B459;">Hillside Auto Mall</div>
+            <div data-simplebar style="height: 90%;">
+	            <span wicket:id="hillsideCarsListRefresingView">
+	              <img wicket:id="hillSIdeCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	            </span>
+            </div>
+          </div>	
+        </div>
+      </div>
+    </div>
+    <div style="width: 33%;display: inline-block;margin: 0 2px;height: 100%;position: relative;">
+      <div style="position:absolute;left: 2px;top:2px; width:48%;height: 44%;border: 2px dashed #777777;background-color:#FFF;; border-radius: 10px;">
+        <div wicket:id="jackContainer" style="background-image: url(resources/images/Insurace_Customers_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="column-header" style="background-color: #777777;">Jack</div>
+          <div data-simplebar style="height: 90%;">
+	          <span wicket:id="jackCarsListRefresingView">
+	            <img wicket:id="johnCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	          </span>
+          </div>
+        </div>
+        <a href="#" wicket:id="getJackGetPolicyLink">
+          <span class="link-big"> Get Policy </span>
+        </a>&nbsp;
+        <div wicket:id="getPolicyModalWindow"></div>
+        <a href="#" wicket:id="getJackFileClaimLink">
+          <span class="link-big"> File Claim </span>
+        </a>
+        <div wicket:id="fileClaimModalWindow"></div>
+      </div>
+      <div style="position:absolute;right: 2px;top:2px; width:48%;height: 44%;border: 2px dashed #777777;background-color:#FFF;; border-radius: 10px;">
+        <div wicket:id="roseContainer" style="background-image: url(resources/images/Insurace_Customers_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="column-header" style="background-color: #777777;">Rose</div>
+          <div data-simplebar style="height: 90%;">
+	          <span wicket:id="roseCarsListRefresingView">
+	            <img wicket:id="samCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	          </span>
+          </div>
+        </div>
+        <a href="#" wicket:id="getRoseGetPolicyLink">
+          <span class="link-big"> Get Policy </span>
+        </a>&nbsp;
+        <a href="#" wicket:id="getRoseFileClaimLink">
+          <span class="link-big"> File Claim </span>
+        </a>
+      </div>
+      <div style="position:absolute;left: 2px;top:50%; width:48%;height: 44%;border: 2px dashed #777777;background-color:#FFF;; border-radius: 10px;">
+        <div wicket:id="romeoContainer" style="background-image: url(resources/images/Insurace_Customers_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="column-header" style="background-color: #777777;">Romeo</div>
+          <div data-simplebar style="height: 90%;">
+	          <span wicket:id="romeoCarsListRefresingView">
+	            <img wicket:id="peterCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	          </span>
+          </div>
+        </div>
+         <a href="#" wicket:id="getRomeoGetPolicyLink">
+          <span class="link-big"> Get Policy </span>
+        </a>&nbsp;
+        <a href="#" wicket:id="getRomeoFileClaimLink">
+          <span class="link-big"> File Claim </span>
+        </a>
+      </div>
+      <div style="position:absolute;right: 2px;top:50%; width:48%;height: 44%;border: 2px dashed #777777;background-color:#FFF;; border-radius: 10px;">
+        <div wicket:id="julietContainer" style="background-image: url(resources/images/Insurace_Customers_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="column-header" style="background-color: #777777;">Juliet</div>
+          <div data-simplebar style="height: 90%;">
+	          <span wicket:id="julietCarsListRefresingView">
+	            <img wicket:id="harryCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	          </span>
+          </div>
+        </div>
+        <a href="#" wicket:id="getJulietGetPolicyLink">
+          <span class="link-big"> Get Policy </span>
+        </a>&nbsp;
+        <a href="#" wicket:id="getJulietFileClaimLink">
+          <span class="link-big"> File Claim </span>
+        </a>
+      </div>
+    </div>
+    <div style="width: 33%;display: inline-block;float: right;height: 100%;">
+      <div style="height: 49%;position: relative;">
+        <div style="position:absolute;left: 2px;top:2px; width:48%;height: 90%;border: 2px dashed #CD6254;background-color:#FFF;; border-radius: 10px;">
+          <div wicket:id="usaaContainer" style="background-image: url(resources/images/Auto_Insurance_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="column-header" style="background-color: #CD6254;">USAA</div>
+            <div data-simplebar style="height: 90%;">
+	            <span wicket:id="usaaCarsListRefresingView">
+	              <img wicket:id="usaaCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	            </span>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute;right: 2px;top:2px; width:48%;height: 90%;border: 2px dashed #CD6254;background-color:#FFF;; border-radius: 10px;">
+          <div wicket:id="geicoContainer" style="background-image: url(resources/images/Auto_Insurance_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="column-header" style="background-color: #CD6254;">Geico</div>
+            <span wicket:id="geicoCarsListRefresingView">
+              <img wicket:id="geicoCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+            </span>
+          </div>
+        </div>
+      </div>
+      <div style="height: 48%;margin-top: 5px;position: relative;">
+        <div style="position:absolute;left: 2px;top:2px; width:48%;height: 90%;border: 2px dashed #428FC4;background-color:#FFF;; border-radius: 10px;">
+          <div wicket:id="euroAutoWorksContainer" style="background-image: url(resources/images/BodyShop_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="column-header" style="background-color: #428FC4;">Euro Auto Works</div>
+            <div data-simplebar style="height: 90%;">
+	            <span wicket:id="euroAutoWorksCarsListRefresingView">
+	              <img wicket:id="euroAutoWorksCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	            </span>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute;right: 2px;top:2px; width:48%;height: 90%;border: 2px dashed #428FC4;background-color:#FFF;; border-radius: 10px;">
+          <div wicket:id="autoCareEastCarsContainer" style="background-image: url(resources/images/BodyShop_Low_Opacity.png); background-size: cover; height: 100%;overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="column-header" style="background-color: #428FC4;">Auto Care East</div>
+            <div data-simplebar style="height: 90%;">
+	            <span wicket:id="AutoCareEastCarsListRefresingView">
+	              <img wicket:id="autoCareEastCarIcon" src="Car.png" draggable="true" ondragstart="drag(event)" style="width: 45%; height: 45%">
+	            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <wicket:fragment wicket:id="vehicleDetailsModalWindowContentFragment">
+    	<table>
+			<tr wicket:id="vehicleDetailsRefresingView">
+				<td wicket:id="vinNumber">Vin Number</td>
+				<td wicket:id="vehicleOwner">Vehicle Owner</td> 
+			</tr>
+		</table>
+    </wicket:fragment>
+    <wicket:fragment wicket:id="errorDetailsModalWindowContentFragment">
+		<span wicket:id="errorMessage" style="color:red;">Error Occured</span>
+    </wicket:fragment>
+  </div>
+  
+  <div wicket:id="transactionDetailsRow" id="transactionDetailsRow" data-simplebar class="transaction-details-row">
+      <div wicket:id="transactionDetailsRefresingView" style="display: inline-block; padding: 10px;">
+        <div wicket:id="transactionDetailsContainer" class="transaction-details">
+          <div style="width: 49%; display: inline-block;">
+            <div class="transaction-block-header" wicket:id="block">Block 1</div>
+            <div>Digital ID:&nbsp;<span wicket:id="digitalId">Did_254885</span></div>
+            <div>Owner:&nbsp;<span wicket:id="owner">Insurer 1</span></div>
+          </div>
+          <div style="width: 49%; display: inline-block; vertical-align: top;">
+            <div><span wicket:id="transactionTimeStamp">112255887744</span></div>
+            <div>From:&nbsp;<span wicket:id="transactionFrom">Customer</span></div>
+            <div>To:&nbsp;<span wicket:id="transactionTo">Insurer 1</span></div>
+          </div>
+          <div style="font-size: x-small;">
+            Txn ID:&nbsp;<span wicket:id="transactionId">1255f-23fe3-112eec23a-558a65c</span>
+          </div>
+        </div>
+    </div>
+  </div>
+</body>
+</html>
