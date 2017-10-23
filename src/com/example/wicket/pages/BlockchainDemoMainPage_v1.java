@@ -67,6 +67,7 @@ import com.example.wicket.dataobject.TransactionDO;
 import com.example.wicket.dataobject.TransactionDO.TransactionEnum;
 import com.example.wicket.helper.MockBlockChainRestServiceHelper;
 import com.example.wicket.helper.StringHelper;
+import com.example.wicket.panel.CustomModalPanel;
 import com.example.wicket.panel.ModalPanelContent;
 import com.example.wicket.panel.RecallVehicleModalWindowContent;
 
@@ -98,10 +99,10 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 	private WebMarkupContainer assetTransactionContainer;
 	private WebMarkupContainer jsloadingpanel;
 	private WebMarkupContainer transactionDetailsRow;
-	private ModalWindow getRecallVehicleModalWindow;
-	private ModalWindow getPolicyModalWindow;
-	private ModalWindow fileClaimModalWindow;
-	private ModalWindow errorMessageModalWindow;
+	private CustomModalPanel getRecallVehicleModalWindow;
+	private CustomModalPanel getPolicyModalWindow;
+	private CustomModalPanel fileClaimModalWindow;
+	private CustomModalPanel errorMessageModalWindow;
 	private Panel fileClaimModalpanelContent;
 	private Panel getPolicyModalWindowContent;
 	private Panel getRecallVehicleModalWindowContent;
@@ -1487,7 +1488,7 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 
 	private ModalWindow createGetPolicyModalWindow()
 	{
-		getPolicyModalWindow = new ModalWindow("getPolicyModalWindow")
+		getPolicyModalWindow = new CustomModalPanel("getPolicyModalWindow")
 		{
 			private static final long serialVersionUID = 9032816101409549762L;
 
@@ -1501,15 +1502,15 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 			public void show(AjaxRequestTarget target) {
 				super.show(target);
 				
-				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
-	                    + "if (thisWindow) {\n"
-						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
-	                    + "modalElement.style.removeProperty('top');\n"
-	                    + "modalElement.style.removeProperty('left');\n"
-	                    + "modalElement.style.removeProperty('position');\n"
-	                    + "modalElement.style.setProperty('top', '25%');\n"
-	                    + "modalElement.style.setProperty('left', '25%');\n"
-	                    + "}}, 300)");
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 300)");
 			}
 		};
 
@@ -1537,21 +1538,21 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 
 	private ModalWindow createFileClaimModalWindow()
 	{
-		fileClaimModalWindow = new ModalWindow("fileClaimModalWindow") {
+		fileClaimModalWindow = new CustomModalPanel("fileClaimModalWindow") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void show(AjaxRequestTarget target) {
 				super.show(target);
-				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
-	                    + "if (thisWindow) {\n"
-						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
-	                    + "modalElement.style.removeProperty('top');\n"
-	                    + "modalElement.style.removeProperty('left');\n"
-	                    + "modalElement.style.removeProperty('position');\n"
-	                    + "modalElement.style.setProperty('top', '25%');\n"
-	                    + "modalElement.style.setProperty('left', '25%');\n"
-	                    + "}}, 1000)");
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 1000)");
 			}
 		};
 
@@ -1579,21 +1580,21 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 
 	private ModalWindow createRecallVehicleModalWindow()
 	{
-		getRecallVehicleModalWindow = new ModalWindow("getRecallVehicleModalWindow") {
+		getRecallVehicleModalWindow = new CustomModalPanel("getRecallVehicleModalWindow") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void show(AjaxRequestTarget target) {
 				super.show(target);
-				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
-	                    + "if (thisWindow) {\n"
-						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
-	                    + "modalElement.style.removeProperty('top');\n"
-	                    + "modalElement.style.removeProperty('left');\n"
-	                    + "modalElement.style.removeProperty('position');\n"
-	                    + "modalElement.style.setProperty('top', '25%');\n"
-	                    + "modalElement.style.setProperty('left', '25%');\n"
-	                    + "}}, 1000)");
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 1000)");
 			}
 		};
 
@@ -1623,21 +1624,21 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 	
 	private ModalWindow createErrorMessageModalWindow()
 	{
-		errorMessageModalWindow = new ModalWindow("errorMessageModalWindow"){
+		errorMessageModalWindow = new CustomModalPanel("errorMessageModalWindow"){
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void show(AjaxRequestTarget target) {
 				super.show(target);
-				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
-	                    + "if (thisWindow) {\n"
-						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
-	                    + "modalElement.style.removeProperty('top');\n"
-	                    + "modalElement.style.removeProperty('left');\n"
-	                    + "modalElement.style.removeProperty('position');\n"
-	                    + "modalElement.style.setProperty('top', '25%');\n"
-	                    + "modalElement.style.setProperty('left', '25%');\n"
-	                    + "}}, 1000)");
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 1000)");
 			}
 		};
 
