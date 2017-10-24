@@ -26,7 +26,5 @@ public class BlockchainDemoApplication extends WebApplication {
 		super.init();
 		mountPage("/main", BlockchainDemoMainPage.class);
 		mountPage("/v1", BlockchainDemoMainPage_v1.class);
-		
-		getRequestCycleSettings().setGatherExtendedBrowserInfo(true);
 	}
 }

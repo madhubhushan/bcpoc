@@ -358,14 +358,18 @@ public class BlockChainRestServiceHelper
 		ctorMsgMap.put("args", args); //manufacturer
 
 		Map<String, Object> chainCodeMap = new HashMap<String, Object>();
-		chainCodeMap.put("name", "46c56925820bb6d2b6fab8b1dadde2f427954c8fbf4299865fc9a0c11d44fd78fdbdf38c309ff85bffce2479194d77d6bf3fd04fef474d9048df2bb07e47b42e");
-
+		//chainCodeMap.put("name", "46c56925820bb6d2b6fab8b1dadde2f427954c8fbf4299865fc9a0c11d44fd78fdbdf38c309ff85bffce2479194d77d6bf3fd04fef474d9048df2bb07e47b42e");
+		chainCodeMap.put("name", "vehicle");
+		
+		
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
 		paramsMap.put("type", 1);
 		paramsMap.put("chaincodeID", chainCodeMap);
 		paramsMap.put("ctorMsg", ctorMsgMap);
-		paramsMap.put("secureContext", "user_type1_0");
-
+		//paramsMap.put("secureContext", "user_type1_0");
+		paramsMap.put("secureContext", "jim");
+		
+		
 		Map<String, Object> reqParams = new HashMap<String, Object>();
 		reqParams.put("jsonrpc", "2.0");
 		reqParams.put("method", method); //invoke,
@@ -430,9 +434,13 @@ public class BlockChainRestServiceHelper
 		Thread.sleep(1500);
 		URL obj = new URL(TRANSACTIONS_GET_URL + messageCode);
 
+		System.out.println("URL obj " + obj.getPath());
+
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestMethod("GET");
 		
-		return con.getResponseCode();
+		int respCode = con.getResponseCode();
+		System.out.println("GET Response Code :: " + respCode);
+		return respCode;
 	}
 }

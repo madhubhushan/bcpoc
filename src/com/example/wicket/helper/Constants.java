@@ -17,8 +17,8 @@ public class Constants
 	public static final String JULIET = "Juliet";
 
 	// Insurance companies
-	public static final String USAA = "USAA";
-	public static final String GEICO = "Geico";
+	public static final String USAA = "Insurer1";
+	public static final String GEICO = "Insurer2";
 
 	// Body shops
 	public static final String EURO_AUTOWORKS = "Euro Autoworks";

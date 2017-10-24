@@ -387,7 +387,7 @@
 			// we need to have background position: absolute, which makes the movement of
 			// the window really jerky if the window stays position: fixed
 			if (Wicket.Browser.isIELessThan11() || Wicket.Browser.isGecko()) {
-				this.window.style.position = "absolute";
+				this.window.style.position = "fixed";
 			}
 
 			// fix the cursors
@@ -850,7 +850,7 @@
 				var e = document.createElement("input");
 				var x = Wicket.Window.getScrollX();
 				var y = Wicket.Window.getScrollY();
-				e.style.position = "absolute";
+				e.style.position = "fixed";
 				e.style.left = "25%";
 				e.style.top = "25%";
 				document.body.appendChild(e);
@@ -1170,7 +1170,7 @@
 	 */
 	Wicket.Window.getMarkup = function(idWindow, idClassElement, idCaption, idContent, idTop, idTopLeft, idTopRight, idLeft, idRight, idBottomLeft, idBottomRight, idBottom, idCaptionText, isFrame) {
 		var s =
-				"<div class=\"wicket-modal\" id=\""+idWindow+"\" role=\"dialog\" aria-labelledBy=\""+idCaptionText+"\" style=\"top: 10px; left: 10px; width: 100px;\"><form style='background-color:transparent;padding:0px;margin:0px;border-width:0px;position:static'>"+
+				"<div class=\"wicket-modal\" id=\""+idWindow+"\" role=\"dialog\" aria-labelledBy=\""+idCaptionText+"\" style=\"top: 25%; left: 25%; width: 100px; position: fixed\"><form style='background-color:transparent;padding:0px;margin:0px;border-width:0px;position:static'>"+
 				"<div id=\""+idClassElement+"\">"+
 
 					"<div class=\"w_top_1\">"+
@@ -1296,7 +1296,7 @@
 				// however background with position:fixed makes the text cursor in textfieds
 				// in modal window disappear
 				if (Wicket.Browser.isIELessThan11() || Wicket.Browser.isGecko()) {
-					e.style.position = "absolute";
+					e.style.position = "fixed";
 				}
 
 				// set the element
@@ -1412,7 +1412,7 @@
 		 */
 		onScrollResize: function(dontChangePosition) {
 			// if the iframe is not position:fixed fix it's position
-			if (this.element.style.position === "absolute") {
+			if (this.element.style.position === "fixed") {
 
 				var w = Wicket.Window.getViewportWidth();
 				var h = Wicket.Window.getViewportHeight();
@@ -1423,8 +1423,8 @@
 	            scLeft = Wicket.Window.getScrollX();
 				scTop = Wicket.Window.getScrollY();
 
-				this.element.style.top = "25%";
-				this.element.style.left = "25%";
+				this.element.style.top = scTop + "px";
+				this.element.style.left = scLeft + "px";
 
 				if (document.all) { // opera or explorer
 					this.element.style.width = w;

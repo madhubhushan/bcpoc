@@ -52,9 +52,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.ClientProperties;
-import org.apache.wicket.protocol.http.WebSession;
-import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
@@ -65,7 +62,7 @@ import com.example.wicket.dataobject.ClaimDO.ClaimStatusEnum;
 import com.example.wicket.dataobject.PolicyDO;
 import com.example.wicket.dataobject.TransactionDO;
 import com.example.wicket.dataobject.TransactionDO.TransactionEnum;
-import com.example.wicket.helper.MockBlockChainRestServiceHelper;
+import com.example.wicket.helper.BlockChainRestServiceHelper;
 import com.example.wicket.helper.StringHelper;
 import com.example.wicket.panel.CustomModalPanel;
 import com.example.wicket.panel.ModalPanelContent;
@@ -163,12 +160,6 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 		};
 		jsloadingpanel.setOutputMarkupPlaceholderTag(true);
 		add(jsloadingpanel);
-		
-		WebClientInfo webClientInfo = WebSession.get().getClientInfo();
-		ClientProperties cp = webClientInfo.getProperties();
-		
-		System.err.println(cp.getNavigatorUserAgent());
-		System.err.println(cp.getNavigatorPlatform());
 	}
 	
 	private AjaxLink<Void> getCreateVehicleLink(final String id)
@@ -197,13 +188,13 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 						model = TOYOTA_MODELS[modelnumber];
 					}
 
-					boolean createVehicleSuccess = MockBlockChainRestServiceHelper.createVehicle(brand, model);
+					boolean createVehicleSuccess = BlockChainRestServiceHelper.createVehicle(brand, model);
 
 					if(createVehicleSuccess)
 					{
 						//TODO
-						//CarDO newlyCreatedCar = MockBlockChainRestServiceHelper.getAddedVehicleDetails();
-						CarDO newlyCreatedCar = MockBlockChainRestServiceHelper.getAddedVehicleDetails(brand, model);
+						CarDO newlyCreatedCar = BlockChainRestServiceHelper.getAddedVehicleDetails();
+						//CarDO newlyCreatedCar = MockBlockChainRestServiceHelper.getAddedVehicleDetails(brand, model);
 
 						if(newlyCreatedCar != null)
 						{
@@ -393,11 +384,13 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 								customerName = JULIET;
 							}
 
-							boolean buyInsuranceSuccess = MockBlockChainRestServiceHelper.buyInsurance(customerName, policy.getInsurer(), policy.getVehicleId());
+							boolean buyInsuranceSuccess = BlockChainRestServiceHelper.buyInsurance(customerName, policy.getInsurer(), policy.getVehicleId());
+							//boolean buyInsuranceSuccess = MockBlockChainRestServiceHelper.buyInsurance(customerName, policy.getInsurer(), policy.getVehicleId());
 							
 							if(buyInsuranceSuccess)
 							{
-								CarDO insuredCar = MockBlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
+								CarDO insuredCar = BlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
+								//CarDO insuredCar = MockBlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
 
 								if(insuredCar != null && !StringHelper.isNullOrEmpty(insuredCar.getDigitalId()) && !StringHelper.isNullOrEmpty(insuredCar.getDigitalIdOwner()))
 								{
@@ -594,10 +587,12 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 
 						try
 						{
-							TransactionEnum raiseClaimStatus = MockBlockChainRestServiceHelper.raiseClaim(customerName, policy.getInsurer(), policy.getVehicleId(), "metadata");
-
-							CarDO claimRaisedCar = MockBlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
-
+							TransactionEnum raiseClaimStatus = BlockChainRestServiceHelper.raiseClaim(customerName, policy.getInsurer(), policy.getVehicleId(), "metadata");
+							//TransactionEnum raiseClaimStatus = MockBlockChainRestServiceHelper.raiseClaim(customerName, policy.getInsurer(), policy.getVehicleId(), "metadata");
+							
+							CarDO claimRaisedCar = BlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
+							//CarDO claimRaisedCar = MockBlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
+							
 							if(TransactionEnum.VALID.equals(raiseClaimStatus))
 							{
 								if(claimRaisedCar != null && !StringHelper.isNullOrEmpty(claimRaisedCar.getDigitalId()) && !StringHelper.isNullOrEmpty(claimRaisedCar.getDigitalIdOwner()))
@@ -1007,11 +1002,13 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 					{
 						String transferTo = HILLSIDE_AUTOMALL;
 
-						boolean isTransferSuccess = MockBlockChainRestServiceHelper.transferVehicle(source, transferTo, draggingCar.getVin(), "transfertodealer");
-
+						boolean isTransferSuccess = BlockChainRestServiceHelper.transferVehicle(source, transferTo, draggingCar.getVin(), "transfertodealer");
+						//boolean isTransferSuccess = MockBlockChainRestServiceHelper.transferVehicle(source, transferTo, draggingCar.getVin(), "transfertodealer");
+						
 						if(isTransferSuccess)
 						{
-							CarDO transferredVehicle = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							CarDO transferredVehicle = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							//CarDO transferredVehicle = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
 							
 							if(transferredVehicle != null)
 							{
@@ -1072,12 +1069,14 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 							transferTo = ROSE;
 						}
 
-						boolean isTransferSuccess = MockBlockChainRestServiceHelper.transferVehicle(transferFrom, transferTo, draggingCar.getVin(), "transfertouser");
-
+						boolean isTransferSuccess = BlockChainRestServiceHelper.transferVehicle(transferFrom, transferTo, draggingCar.getVin(), "transfertouser");
+						//boolean isTransferSuccess = MockBlockChainRestServiceHelper.transferVehicle(transferFrom, transferTo, draggingCar.getVin(), "transfertouser");
+						
 						if(isTransferSuccess)
 						{
-							CarDO transferredVehicle = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
-
+							CarDO transferredVehicle = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							//CarDO transferredVehicle = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							
 							if(transferredVehicle != null)
 							{
 								isTransactionValid = true;
@@ -1140,10 +1139,12 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 
 					try
 					{
-						TransactionEnum sellVehicleStatus = MockBlockChainRestServiceHelper.sellVehicle(seller, buyer, draggingCar.getVin());
-
-						CarDO soldCar = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
-
+						TransactionEnum sellVehicleStatus = BlockChainRestServiceHelper.sellVehicle(seller, buyer, draggingCar.getVin());
+						//TransactionEnum sellVehicleStatus = MockBlockChainRestServiceHelper.sellVehicle(seller, buyer, draggingCar.getVin());
+						
+						CarDO soldCar = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+						//CarDO soldCar = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+						
 						if(TransactionEnum.VALID.equals(sellVehicleStatus))
 						{
 							if(soldCar != null)
@@ -1228,12 +1229,14 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 							bodyShop = AUTO_CARE_EAST;
 						}
 
-						boolean certifyVehicleSuccess = MockBlockChainRestServiceHelper.certifyVehicle(bodyShop, draggingCar.getVin());
-
+						boolean certifyVehicleSuccess = BlockChainRestServiceHelper.certifyVehicle(bodyShop, draggingCar.getVin());
+						//boolean certifyVehicleSuccess = MockBlockChainRestServiceHelper.certifyVehicle(bodyShop, draggingCar.getVin());
+						
 						if(certifyVehicleSuccess)
 						{
-							CarDO certifiedCar = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
-
+							CarDO certifiedCar = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							//CarDO certifiedCar = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							
 							if(certifiedCar != null)
 							{
 								isTransactionValid = true;
@@ -1282,12 +1285,14 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 							insurer = GEICO;
 						}
 
-						boolean releaseTokenSuccess = MockBlockChainRestServiceHelper.releaseToken(insurer, draggingCar.getVehicleOwner(), draggingCar.getVin(), draggingCar.getDigitalId());
-
+						boolean releaseTokenSuccess = BlockChainRestServiceHelper.releaseToken(insurer, draggingCar.getVehicleOwner(), draggingCar.getVin(), draggingCar.getDigitalId());
+						//boolean releaseTokenSuccess = MockBlockChainRestServiceHelper.releaseToken(insurer, draggingCar.getVehicleOwner(), draggingCar.getVin(), draggingCar.getDigitalId());
+						
 						if(releaseTokenSuccess)
 						{
-							CarDO tokenReleasedCar = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
-
+							CarDO tokenReleasedCar = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							//CarDO tokenReleasedCar = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							
 							if(tokenReleasedCar != null)
 							{
 								isTransactionValid = true;

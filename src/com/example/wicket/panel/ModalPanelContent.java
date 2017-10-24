@@ -25,7 +25,7 @@ public abstract class ModalPanelContent extends Panel
 {
 	private static final long serialVersionUID = -8736752287102219250L;
 	
-	private static final List<String> INSURANCE_COMPANIES = Arrays.asList("USAA", "Geico");
+	private static final List<String> INSURANCE_COMPANIES = Arrays.asList("Insurer1", "Insurer2");
 	private Set<IModel<AssetDO>> customerAssets;
 	boolean isShowOnlyInsuredVIN;
 	DropDownChoice<String> getPolicyInsurerDD;
@@ -105,15 +105,15 @@ public abstract class ModalPanelContent extends Panel
 			protected void onUpdate(AjaxRequestTarget target) 
 			{
 				policy.setVehicleId(vehicleVINDD.getModelObject().toString());
-				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
-	                    + "if (thisWindow) {\n"
-						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
-	                    + "modalElement.style.removeProperty('top');\n"
-	                    + "modalElement.style.removeProperty('left');\n"
-	                    + "modalElement.style.removeProperty('position');\n"
-	                    + "modalElement.style.setProperty('top', '25%');\n"
-	                    + "modalElement.style.setProperty('left', '25%');\n"
-	                    + "}}, 100)");
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 100)");
 			}
 	
 		});
@@ -132,15 +132,15 @@ public abstract class ModalPanelContent extends Panel
 			protected void onUpdate(AjaxRequestTarget target) 
 			{
 				policy.setInsurer(getPolicyInsurerDD.getModelObject().toString());
-				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
-	                    + "if (thisWindow) {\n"
-						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
-	                    + "modalElement.style.removeProperty('top');\n"
-	                    + "modalElement.style.removeProperty('left');\n"
-	                    + "modalElement.style.removeProperty('position');\n"
-	                    + "modalElement.style.setProperty('top', '25%');\n"
-	                    + "modalElement.style.setProperty('left', '25%');\n"
-	                    + "}}, 100)");
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 100)");
 			}
 	
 		});
