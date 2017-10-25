@@ -76,9 +76,7 @@
 
 .error-transaction {
 	box-shadow: -7px 7px 5px 0px rgba(50, 50, 50, 0.75);
-	width: 400px;
 	background-color: #FFC2B3;
-	word-wrap: break-word;
 	border: 2px solid #CC0000;
 }
 

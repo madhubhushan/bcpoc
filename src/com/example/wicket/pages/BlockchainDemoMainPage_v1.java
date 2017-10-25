@@ -24,6 +24,7 @@ import static com.example.wicket.helper.Constants.USAA;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -189,10 +190,9 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 					}
 
 					boolean createVehicleSuccess = BlockChainRestServiceHelper.createVehicle(brand, model);
-
+					
 					if(createVehicleSuccess)
 					{
-						//TODO
 						CarDO newlyCreatedCar = BlockChainRestServiceHelper.getAddedVehicleDetails();
 						//CarDO newlyCreatedCar = MockBlockChainRestServiceHelper.getAddedVehicleDetails(brand, model);
 
@@ -230,20 +230,17 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 						}
 						else
 						{
-							//TODO done
 							errorMessageModalWindow.show(target);
 						}
 					}
 					else
 					{
-						//TODO done
 						errorMessageModalWindow.show(target);
 					}
 				}
 				catch(Exception e) 
 				{
 					e.printStackTrace(System.err);
-					//TODO done
 					errorMessageModalWindow.show(target);
 				}
 			}
@@ -1459,12 +1456,58 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 				WebMarkupContainer transactionDetailsContainer = new WebMarkupContainer("transactionDetailsContainer");
 				if(TransactionEnum.FRAUDULENT.equals(item.getModelObject().getTransactionStatus()))
 				{
-					transactionDetailsContainer.add(new AttributeModifier("class", "error-transaction"));
+					transactionDetailsContainer.add(new AttributeModifier("class", "list-group-item error-transaction"));
 				}
 				if(TransactionEnum.INVALID.equals(item.getModelObject().getTransactionStatus()))
 				{
-					transactionDetailsContainer.add(new AttributeModifier("class", "error-transaction"));
+					transactionDetailsContainer.add(new AttributeModifier("class", "list-group-item error-transaction"));
 				}
+
+				try 
+				{
+					SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+					
+					Date d1 = format.parse(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(item.getModelObject().getId())));
+					Date d2 = Calendar.getInstance().getTime();
+
+					//in milliseconds
+					long diff = d2.getTime() - d1.getTime();
+
+					long diffSeconds = diff / 1000 % 60;
+					long diffMinutes = diff / (60 * 1000) % 60;
+					long diffHours = diff / (60 * 60 * 1000) % 24;
+					long diffDays = diff / (24 * 60 * 60 * 1000);
+					
+					StringBuffer whenItHappens = new StringBuffer();
+					
+					if(diffDays > 0)
+					{
+						whenItHappens.append(diffDays);
+						whenItHappens.append(" days, ");
+					}
+					if(diffHours > 0)
+					{
+						whenItHappens.append(diffHours);
+						whenItHappens.append(" hours, ");
+					}
+					if(diffMinutes > 0)
+					{
+						whenItHappens.append(diffMinutes);
+						whenItHappens.append(" minutes, ");
+					}
+					if(diffSeconds >= 0)
+					{
+						whenItHappens.append(diffSeconds);
+						whenItHappens.append(" seconds");
+					}
+					
+					transactionDetailsContainer.add(new Label("whenItHappens", Model.of(whenItHappens.toString())));
+					
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+					System.err.println(e.getMessage());
+				}
+
 				transactionDetailsContainer.add(new Label("block", Model.of(item.getModelObject().getTransactionType())));
 				transactionDetailsContainer.add(new Label("transactionTimeStamp", new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(item.getModelObject().getId()))));
 				transactionDetailsContainer.add(new Label("digitalId", Model.of(item.getModelObject().getInvolvingVehicle())));
@@ -1472,7 +1515,6 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 				transactionDetailsContainer.add(new Label("owner", Model.of(item.getModelObject().getTokenOwner())));
 				transactionDetailsContainer.add(new Label("transactionTo", Model.of(item.getModelObject().getTransactionDestination())));
 				transactionDetailsContainer.add(new Label("transactionId", Model.of(item.getModelObject().getTransactionKey())));
-				transactionDetailsContainer.add(new Label("transactionId-lg", Model.of(item.getModelObject().getTransactionKey())));
 				
 				item.add(transactionDetailsContainer);
 			}
@@ -1696,7 +1738,8 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 	private static final JavaScriptResourceReference DRAG_DROP_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v1.class, "DragDropTouch.js");
 
 	@Override
-	public void renderHead(IHeaderResponse response) {
+	public void renderHead(IHeaderResponse response) 
+	{
 	  response.render(JavaScriptReferenceHeaderItem.forReference(JQUERY_JS));
 	  response.render(JavaScriptReferenceHeaderItem.forReference(BOOTSTRAP_JS));
 	  response.render(JavaScriptReferenceHeaderItem.forReference(METIS_JS));

@@ -262,3 +262,12 @@ div.wicket-modal div.w_silver a.w_close {
 	_background-image: url('frame-gray-1-ie.png');
 }
 
+.custom-select {
+	font-size: 14px;
+    height: 32px;
+    width: 59%;
+    line-height: 1.42857143;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
