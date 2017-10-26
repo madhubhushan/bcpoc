@@ -513,7 +513,7 @@
 			}
 
 			this.window.style.left = "25%";
-			this.window.style.top = "25%";
+			//this.window.style.top = "25%";
 		},
 
 		cookieKey: "wicket-modal-window-positions",
@@ -583,7 +583,7 @@
 					var positions = array[1].split(",");
 					if (positions.length === 4) {
 						this.window.style.left = "25%";
-						this.window.style.top = "25%";
+						//this.window.style.top = "25%";
 						this.window.style.width = positions[2];
 						this.content.style.height = positions[3];
 					}
@@ -852,7 +852,7 @@
 				var y = Wicket.Window.getScrollY();
 				e.style.position = "fixed";
 				e.style.left = "25%";
-				e.style.top = "25%";
+				//e.style.top = "25%";
 				document.body.appendChild(e);
 				e.focus();
 				document.body.removeChild(e);
@@ -948,7 +948,7 @@
 			}
 
 			w.style.left = "25%";
-			w.style.top = "25%";
+			//w.style.top = "25%";
 
 			this.moving();
 		},
@@ -1091,7 +1091,7 @@
 			w.style.width = this.width + "px";
 			w.style.left = "25%";
 			f.style.height = this.height  + "px";
-			w.style.top = "25%";
+			//w.style.top = "25%";
 
 			this.moving();
 			this.resizing();
@@ -1111,7 +1111,7 @@
 
 			w.style.width = this.width + "px";
 			f.style.height = this.height  + "px";
-			w.style.top = "25%";
+			//w.style.top = "25%";
 
 			this.moving();
 			this.resizing();
@@ -1129,7 +1129,7 @@
 			this.clipSize(false, true);
 
 			f.style.height = this.height  + "px";
-			w.style.top = "25%";
+			//w.style.top = "25%";
 
 			this.moving();
 			this.resizing();
@@ -1170,7 +1170,7 @@
 	 */
 	Wicket.Window.getMarkup = function(idWindow, idClassElement, idCaption, idContent, idTop, idTopLeft, idTopRight, idLeft, idRight, idBottomLeft, idBottomRight, idBottom, idCaptionText, isFrame) {
 		var s =
-				"<div class=\"wicket-modal\" id=\""+idWindow+"\" role=\"dialog\" aria-labelledBy=\""+idCaptionText+"\" style=\"top: 25%; left: 25%; width: 100px; position: fixed\"><form style='background-color:transparent;padding:0px;margin:0px;border-width:0px;position:static'>"+
+				"<div class=\"wicket-modal\" id=\""+idWindow+"\" role=\"dialog\" aria-labelledBy=\""+idCaptionText+"\" style=\"width: 100px; position: fixed\"><form style='background-color:transparent;padding:0px;margin:0px;border-width:0px;position:static'>"+
 				"<div id=\""+idClassElement+"\">"+
 
 					"<div class=\"w_top_1\">"+

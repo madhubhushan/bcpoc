@@ -41,8 +41,23 @@ div.wicket-modal {
 	_position: absolute;
 	z-index: 20001; 
 	visibility: hidden;
+	top: 25%;
+	left: 25%;
 }
 
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px)  {
+	div.wicket-modal {	
+		position: fixed;
+		_position: absolute;
+		z-index: 20001; 
+		visibility: hidden;
+		top: 5%;
+		left: 25%;
+	}
+	
+}
 
 div.wicket-modal div.w_top_1 {	
 	width: 100%;	

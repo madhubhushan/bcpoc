@@ -907,6 +907,7 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 				else if(CUSTOMER_REFRESHING_VIEWS.contains(refreshingViewId))
 				{
 					assetIcon.add(new AttributeModifier("src", "resources/images/Policy-claim-ok.png"));
+					assetIcon.add(new AttributeModifier("style", " "));
 				}
 				else
 				{
