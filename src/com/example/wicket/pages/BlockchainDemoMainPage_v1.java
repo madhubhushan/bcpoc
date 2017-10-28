@@ -430,6 +430,7 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 									target.add(assetTransactionContainer);
 									target.add(transactionDetailsRow);
 									target.add(jsloadingpanel);
+									target.appendJavaScript("document.getElementById('"+id+"').focus();");
 								}
 								else
 								{
@@ -463,6 +464,8 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 				getPolicyModalWindow.show(target);
 			}
 		};
+		getPolicyLink.setOutputMarkupPlaceholderTag(true);
+		getPolicyLink.setMarkupId(id);
 		return getPolicyLink;
 	}
 	
@@ -645,6 +648,7 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 								target.add(assetTransactionContainer);
 								target.add(transactionDetailsRow);
 								target.add(jsloadingpanel);
+								target.appendJavaScript("document.getElementById('"+id+"').focus();");
 							}
 							else if(TransactionEnum.FRAUDULENT.equals(raiseClaimStatus))
 							{
@@ -702,6 +706,8 @@ public class BlockchainDemoMainPage_v1 extends WebPage implements IHeaderContrib
 			}
 		};
 		fileClaimLink.setOutputMarkupPlaceholderTag(true);
+		fileClaimLink.setMarkupId(id);
+		
 		return fileClaimLink;
 	}
 
