@@ -31,22 +31,24 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import com.example.wicket.application.BlockchainDemoSession;
 import com.example.wicket.dataobject.CarDO;
-import com.example.wicket.helper.BlockChainRestServiceHelper;
+import com.example.wicket.helper.MockBlockChainRestServiceHelper;
 
-public class RecallVehicleModalWindowContent extends Panel  
+public class RecallVehicleModalWindowContent_v1 extends Panel  
 {
 	private static final long serialVersionUID = 1L;
 	
 	private WebMarkupContainer recalledVehicleDetailsContainer;
+	private WebMarkupContainer recalledVehicleDetailsEmptyContainer;
 	
-	Set<IModel<CarDO>> recallVehicles = new HashSet<IModel<CarDO>>();
+	Set<IModel<CarDO>> recallVehicles = null;
 	private String selectedModel;
 	private String reCallLinkId;
 	private static final String[] HONDA_MODELS = {HONDA_CITY, HONDA_JAZZ, HONDA_AMAZE, HONDA_BRIO};
 	private static final String[] TOYOTA_MODELS = {TOYOTA_FORTUNER, TOYOTA_INNOVA, TOYOTA_COROLLA, TOYOTA_CAMRY};
 
-	public RecallVehicleModalWindowContent(String id, String reCallLinkId) 
+	public RecallVehicleModalWindowContent_v1(String id, String reCallLinkId) 
 	{
 		super(id);
 		this.reCallLinkId = reCallLinkId;
@@ -64,6 +66,25 @@ public class RecallVehicleModalWindowContent extends Panel
 		add(contentContainer);
 		
 		add(getContainer());
+		
+		recalledVehicleDetailsEmptyContainer = new WebMarkupContainer("recalledVehicleDetailsEmptyContainer")
+		{
+			private static final long serialVersionUID = -2319659075729669192L;
+
+			protected void onConfigure() 
+			{
+				if(recallVehicles != null && recallVehicles.isEmpty())
+				{
+					setVisibilityAllowed(true);
+				}
+				else
+				{
+					setVisibilityAllowed(false);
+				}
+			};
+		};
+		recalledVehicleDetailsEmptyContainer.setOutputMarkupPlaceholderTag(true);
+		add(recalledVehicleDetailsEmptyContainer);
 	}
 	
 	private Component getModelDD() 
@@ -112,18 +133,26 @@ public class RecallVehicleModalWindowContent extends Panel
 					if(selectedModel != null && selectedModel != EMPTY_STRING)
 					{
 						//TODO
-						List<CarDO> allCars = BlockChainRestServiceHelper.getRecallVehicleDetails(manufacturer, selectedModel);
-						//List<CarDO> allCars = MockBlockChainRestServiceHelper.getRecallVehicleDetails(manufacturer, selectedModel);
+						List<CarDO> allCars = MockBlockChainRestServiceHelper.getRecallVehicleDetails(manufacturer, selectedModel, BlockchainDemoSession.get());
 						
 						if(allCars != null && !allCars.isEmpty())
 						{
 							for(CarDO car : allCars)
 							{
+								if(recallVehicles == null)
+								{
+									recallVehicles = new HashSet<IModel<CarDO>>();
+								}
 								recallVehicles.add(Model.of(car));
 							}
 						}
+						else
+						{
+							recallVehicles = new HashSet<IModel<CarDO>>();
+						}
 
 						target.add(recalledVehicleDetailsContainer);
+						target.add(recalledVehicleDetailsEmptyContainer);
 						target.appendJavaScript("Wicket.Window.get().autoSizeWindow();");
 					}
 				} 
@@ -146,9 +175,13 @@ public class RecallVehicleModalWindowContent extends Panel
 
 			protected void onConfigure() 
 			{
-				if(!recallVehicles.isEmpty())
+				if(recallVehicles != null && !recallVehicles.isEmpty())
 				{
 					setVisibilityAllowed(true);
+				}
+				else
+				{
+					setVisibilityAllowed(false);
 				}
 			};
 		};
@@ -160,7 +193,15 @@ public class RecallVehicleModalWindowContent extends Panel
 			@Override
 			protected Iterator<IModel<CarDO>> getItemModels() 
 			{
-				return recallVehicles.iterator();
+				if(recallVehicles == null)
+				{
+					Set<IModel<CarDO>> vehicles = new HashSet<IModel<CarDO>>();
+					return vehicles.iterator();
+				}
+				else
+				{
+					return recallVehicles.iterator();
+				}
 			}
 
 			@Override
@@ -176,7 +217,7 @@ public class RecallVehicleModalWindowContent extends Panel
 			protected void onConfigure() 
 			{
 				super.onConfigure();
-				if(!recallVehicles.isEmpty())
+				if(recallVehicles != null && !recallVehicles.isEmpty())
 				{
 					setVisibilityAllowed(true);
 				}

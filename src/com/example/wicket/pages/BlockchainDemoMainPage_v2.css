@@ -1,0 +1,130 @@
+@CHARSET "UTF-8";
+
+.manufacturer_bg
+{
+	background-repeat: no-repeat;
+    background-blend-mode: screen;
+    background-image: url(manufacturing.png);
+    background-size: 166px;	
+    background-position-x: right;
+}
+.insurance_bg
+{
+	background-repeat: no-repeat;
+    background-image: url(insurance.png);
+    background-size: 116px;	
+    background-position-x: right;
+    background-position-y: bottom;
+}
+.bodyshop_bg
+{
+	background-repeat: no-repeat;
+    background-image: url(bodyshop.png);
+    background-size: 122px;	
+    background-position-x: right;
+    background-position-y: bottom;
+        background-blend-mode: multiply;
+}
+.car_owner_bg
+{
+	background-repeat: no-repeat;
+    background-image: url(car_owner.png);
+    background-size: 110px;	
+    background-position-x: right;
+    background-position-y: 55px;
+        background-blend-mode: multiply;
+}
+.dealer_bg
+{
+	background-repeat: no-repeat;
+    background-image: url(dealer.png);
+    background-size: 136px;	
+    background-position-x: right;
+    background-position-y: 56px;
+    background-blend-mode: color-burn;
+}
+.column-header {
+	width: 100%;
+	text-align: center;
+	font-size: 1.5em;
+	color: white;
+	font-family: 'Merriweather', serif;
+}
+
+.plus-img {
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
+	width: 80px;
+	height: 80px;
+	text-align: center;
+	opacity: 0.5;
+	z-index: 10;
+}
+
+.plus-img:HOVER {
+	opacity: 1;
+}
+
+.transaction-details {
+	box-shadow: -7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+	width: 400px;
+	background-color: #FFFFFF;
+	word-wrap: break-word;
+	border: 2px solid #CCCCCC;
+}
+
+.error-transaction {
+	box-shadow: -7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+	background-color: #FFC2B3;
+	border: 2px solid #CC0000;
+}
+
+.transaction-details-row {
+	width: 100%;
+	height: 15vh;
+	background-color: #808000;
+	white-space: nowrap;
+}
+
+.transaction-block-header {
+	width: 100%;
+	background-color: #264D00;
+	color: #FFFFFF;
+	border-radius: 0 0 5px 0;
+}
+
+.error-transaction .transaction-block-header {
+	background-color: #CC0000;
+}
+
+/* Modal panel styles */
+.wicket-mask-dark {
+	opacity: 0.3;
+}
+
+div.wicket-modal div.w_caption {
+	height: 3.4em;
+	padding: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+div.wicket-modal div.w_content_3 {
+	border: none;
+}
+
+div.wicket-modal div.w_content {
+	position: relative;
+    padding: 15px;
+}
+.label_head
+{
+	font-family: 'Droid serif', serif;
+    color: rgba(119, 119, 74, 0.77);
+}
+.label_content
+{
+	font-weight: 200;
+    color: #172517;
+	
+}

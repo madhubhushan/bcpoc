@@ -34,7 +34,7 @@ import org.apache.wicket.model.Model;
 import com.example.wicket.dataobject.CarDO;
 import com.example.wicket.helper.BlockChainRestServiceHelper;
 
-public class RecallVehicleModalWindowContent extends Panel  
+public class RecallVehicleModalWindowContent_v2 extends Panel  
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -46,7 +46,7 @@ public class RecallVehicleModalWindowContent extends Panel
 	private static final String[] HONDA_MODELS = {HONDA_CITY, HONDA_JAZZ, HONDA_AMAZE, HONDA_BRIO};
 	private static final String[] TOYOTA_MODELS = {TOYOTA_FORTUNER, TOYOTA_INNOVA, TOYOTA_COROLLA, TOYOTA_CAMRY};
 
-	public RecallVehicleModalWindowContent(String id, String reCallLinkId) 
+	public RecallVehicleModalWindowContent_v2(String id, String reCallLinkId) 
 	{
 		super(id);
 		this.reCallLinkId = reCallLinkId;

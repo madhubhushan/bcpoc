@@ -1,10 +1,30 @@
 package com.example.wicket.pages;
 
-import static com.example.wicket.helper.Constants.*;
+import static com.example.wicket.helper.Constants.AUTO_CARE_EAST;
+import static com.example.wicket.helper.Constants.EMPTY_STRING;
+import static com.example.wicket.helper.Constants.EURO_AUTOWORKS;
+import static com.example.wicket.helper.Constants.GEICO;
+import static com.example.wicket.helper.Constants.HILLSIDE_AUTOMALL;
+import static com.example.wicket.helper.Constants.HONDA;
+import static com.example.wicket.helper.Constants.HONDA_AMAZE;
+import static com.example.wicket.helper.Constants.HONDA_BRIO;
+import static com.example.wicket.helper.Constants.HONDA_CITY;
+import static com.example.wicket.helper.Constants.HONDA_JAZZ;
+import static com.example.wicket.helper.Constants.JACK;
+import static com.example.wicket.helper.Constants.JULIET;
+import static com.example.wicket.helper.Constants.ROMEO;
+import static com.example.wicket.helper.Constants.ROSE;
+import static com.example.wicket.helper.Constants.TOYOTA;
+import static com.example.wicket.helper.Constants.TOYOTA_CAMRY;
+import static com.example.wicket.helper.Constants.TOYOTA_COROLLA;
+import static com.example.wicket.helper.Constants.TOYOTA_FORTUNER;
+import static com.example.wicket.helper.Constants.TOYOTA_INNOVA;
+import static com.example.wicket.helper.Constants.USAA;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -20,6 +40,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -30,6 +54,7 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import com.example.wicket.dataobject.AssetDO;
 import com.example.wicket.dataobject.CarDO;
@@ -40,10 +65,11 @@ import com.example.wicket.dataobject.TransactionDO;
 import com.example.wicket.dataobject.TransactionDO.TransactionEnum;
 import com.example.wicket.helper.BlockChainRestServiceHelper;
 import com.example.wicket.helper.StringHelper;
+import com.example.wicket.panel.CustomModalPanel;
 import com.example.wicket.panel.ModalPanelContent;
-import com.example.wicket.panel.RecallVehicleModalWindowContent;
+import com.example.wicket.panel.RecallVehicleModalWindowContent_v2;
 
-public class BlockchainDemoMainPage extends WebPage {
+public class BlockchainDemoMainPage_v2 extends WebPage implements IHeaderContributor{
 
 	private static final long serialVersionUID = 1L;
 
@@ -52,16 +78,12 @@ public class BlockchainDemoMainPage extends WebPage {
 	private Set<IModel<CarDO>> toyotaCars = new HashSet<IModel<CarDO>>();
 	private Set<IModel<CarDO>> hondaSoldCars = new HashSet<IModel<CarDO>>();
 	private Set<IModel<CarDO>> toyotaSoldCars = new HashSet<IModel<CarDO>>();
-	private Set<IModel<CarDO>> majorWorldDealerCars = new HashSet<IModel<CarDO>>();
 	private Set<IModel<CarDO>> hillsideDealerCars = new HashSet<IModel<CarDO>>();
 	private Set<IModel<AssetDO>> jackAssets = new HashSet<IModel<AssetDO>>();
 	private Set<IModel<AssetDO>> roseAssets = new HashSet<IModel<AssetDO>>();
-	private Set<IModel<AssetDO>> romeoAssets = new HashSet<IModel<AssetDO>>();
-	private Set<IModel<AssetDO>> julietAssets = new HashSet<IModel<AssetDO>>();
 	private Set<IModel<AssetDO>> usaaAssets = new HashSet<IModel<AssetDO>>();
 	private Set<IModel<AssetDO>> geicoAssets = new HashSet<IModel<AssetDO>>();
 	private Set<IModel<CarDO>> euroWorksBodyShopCars = new HashSet<IModel<CarDO>>();
-	private Set<IModel<CarDO>> autoCaresBodyShopCars = new HashSet<IModel<CarDO>>();
 
 	private List<IModel<TransactionDO>> transactions =  new ArrayList<IModel<TransactionDO>>();
 
@@ -73,58 +95,74 @@ public class BlockchainDemoMainPage extends WebPage {
 	private AjaxLink<Void> createVehicleLink;
 	private AjaxLink<Void> fileClaimLink;
 	private WebMarkupContainer assetTransactionContainer;
+	private WebMarkupContainer jsloadingpanel;
 	private WebMarkupContainer transactionDetailsRow;
-	private ModalWindow getRecallVehicleModalWindow;
-	private ModalWindow getPolicyModalWindow;
-	private ModalWindow fileClaimModalWindow;
-	private ModalWindow errorMessageModalWindow;
+	private CustomModalPanel getRecallVehicleModalWindow;
+	private CustomModalPanel getPolicyModalWindow;
+	private CustomModalPanel fileClaimModalWindow;
+	private CustomModalPanel errorMessageModalWindow;
 	private Panel fileClaimModalpanelContent;
 	private Panel getPolicyModalWindowContent;
 	private Panel getRecallVehicleModalWindowContent;
 	private Fragment errorDetailsModalWindowContent;
 
 	// Wicket IDs
-	private static final String MAJOR_WORLD_CONTAINER = "majorWorldContainer";
 	private static final String HILL_SIDE_CONTAINER = "hillsideContainer";
 	private static final String USAA_CONTAINER = "usaaContainer";
 	private static final String GEIKO_CONTAINER = "geicoContainer";
 	private static final String EURO_AUTO_WORKS_CONTAINER = "euroAutoWorksContainer";
-	private static final String AUTO_CARE_EAST_CONTAINER = "autoCareEastCarsContainer";
 	private static final String JACK_CONTAINER = "jackContainer";
 	private static final String ROSE_CONTAINER = "roseContainer";
-	private static final String ROMEO_CONTAINER = "romeoContainer";
-	private static final String JULIET_CONTAINER = "julietContainer";
 
 	private static final String JACK_REFRESHING_VIEW = "jackCarsListRefresingView";
 	private static final String ROSE_REFRESHING_VIEW = "roseCarsListRefresingView";
-	private static final String ROMEO_REFRESHING_VIEW = "romeoCarsListRefresingView";
-	private static final String JULIET_REFRESHING_VIEW = "julietCarsListRefresingView";
 
 	// Constants
 	private static final List<String> MANUFACTURERS = Arrays.asList(HONDA, TOYOTA);
-	private static final List<String> DEALER_CONTAINERS = Arrays.asList(MAJOR_WORLD_CONTAINER, HILL_SIDE_CONTAINER);
-	private static final List<String> CUSTOMER_CONTAINERS = Arrays.asList(JACK_CONTAINER, ROSE_CONTAINER, ROMEO_CONTAINER, JULIET_CONTAINER);
+	private static final List<String> DEALER_CONTAINERS = Arrays.asList(HILL_SIDE_CONTAINER);
+	private static final List<String> CUSTOMER_CONTAINERS = Arrays.asList(JACK_CONTAINER, ROSE_CONTAINER);
 	private static final List<String> INSURER_CONTAINERS = Arrays.asList(USAA_CONTAINER, GEIKO_CONTAINER);
-	private static final List<String> BODYSHOP_CONTAINERS = Arrays.asList(EURO_AUTO_WORKS_CONTAINER, AUTO_CARE_EAST_CONTAINER);
+	private static final List<String> BODYSHOP_CONTAINERS = Arrays.asList(EURO_AUTO_WORKS_CONTAINER);
 
-	private static final List<String> CUSTOMER_REFRESHING_VIEWS = Arrays.asList("jackCarsListRefresingView", "roseCarsListRefresingView", "julietCarsListRefresingView", "romeoCarsListRefresingView");
+	private static final List<String> CUSTOMER_REFRESHING_VIEWS = Arrays.asList("jackCarsListRefresingView", "roseCarsListRefresingView");
 
 	private static final String[] HONDA_MODELS = {HONDA_CITY, HONDA_JAZZ, HONDA_AMAZE, HONDA_BRIO};
 	private static final String[] TOYOTA_MODELS = {TOYOTA_FORTUNER, TOYOTA_INNOVA, TOYOTA_COROLLA, TOYOTA_CAMRY};
 
-	public BlockchainDemoMainPage(PageParameters params) {
+	private static final JavaScriptResourceReference BC_DRAG_DROP_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "bc-drag-drop.js");
+	
+	public BlockchainDemoMainPage_v2(PageParameters params) {
 		super(params);
 	}
 
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-
+		
+		WebMarkupContainer appIcon = new WebMarkupContainer("appIcon");
+		appIcon.add(new AttributeModifier("src", "resources/images/bcpoc.png"));
+		add(appIcon);
+		
 		add(createAssetTransactionContainer());
 		createErrorDetailsModelWindowContent();
 		add(createtransactionDetailsRow());
-	}
+		
+		jsloadingpanel = new WebMarkupContainer("jsloadingpanel") 
+		{
+			private static final long serialVersionUID = 1L;
 
+			@Override
+			public void renderHead(IHeaderResponse response) 
+			{
+				super.renderHead(response);
+				response.render(JavaScriptReferenceHeaderItem.forReference(BC_DRAG_DROP_JS));
+				response.render(OnDomReadyHeaderItem.forScript("addDragDropEventListeners()"));
+			}
+		};
+		jsloadingpanel.setOutputMarkupPlaceholderTag(true);
+		add(jsloadingpanel);
+	}
+	
 	private AjaxLink<Void> getCreateVehicleLink(final String id)
 	{
 		createVehicleLink = new AjaxLink<Void>(id)
@@ -152,10 +190,11 @@ public class BlockchainDemoMainPage extends WebPage {
 					}
 
 					boolean createVehicleSuccess = BlockChainRestServiceHelper.createVehicle(brand, model);
-
+					
 					if(createVehicleSuccess)
 					{
 						CarDO newlyCreatedCar = BlockChainRestServiceHelper.getAddedVehicleDetails();
+						//CarDO newlyCreatedCar = MockBlockChainRestServiceHelper.getAddedVehicleDetails(brand, model);
 
 						if(newlyCreatedCar != null)
 						{
@@ -187,23 +226,21 @@ public class BlockchainDemoMainPage extends WebPage {
 							target.add(createVehicleLink);
 							target.add(assetTransactionContainer);	
 							target.add(transactionDetailsRow);
+							target.add(jsloadingpanel);
 						}
 						else
 						{
-							//TODO done
 							errorMessageModalWindow.show(target);
 						}
 					}
 					else
 					{
-						//TODO done
 						errorMessageModalWindow.show(target);
 					}
 				}
 				catch(Exception e) 
 				{
 					e.printStackTrace(System.err);
-					//TODO done
 					errorMessageModalWindow.show(target);
 				}
 			}
@@ -241,7 +278,7 @@ public class BlockchainDemoMainPage extends WebPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) 
 			{
-				getRecallVehicleModalWindowContent = new RecallVehicleModalWindowContent(getRecallVehicleModalWindow.getContentId(), id);
+				getRecallVehicleModalWindowContent = new RecallVehicleModalWindowContent_v2(getRecallVehicleModalWindow.getContentId(), id);
 
 				getRecallVehicleModalWindow.setContent(getRecallVehicleModalWindowContent);
 				getRecallVehicleModalWindow.show(target);
@@ -266,29 +303,15 @@ public class BlockchainDemoMainPage extends WebPage {
 		assetTransactionContainer.add(createFileClaimModalWindow());
 		assetTransactionContainer.add(createErrorMessageModalWindow());
 		
-		assetTransactionContainer.add(getGetPolicyLink("getJackGetPolicyLink"));
-		assetTransactionContainer.add(getFileClaimLink("getJackFileClaimLink"));
-		assetTransactionContainer.add(getGetPolicyLink("getRoseGetPolicyLink"));
-		assetTransactionContainer.add(getFileClaimLink("getRoseFileClaimLink"));
-		assetTransactionContainer.add(getGetPolicyLink("getRomeoGetPolicyLink"));
-		assetTransactionContainer.add(getFileClaimLink("getRomeoFileClaimLink"));
-		assetTransactionContainer.add(getGetPolicyLink("getJulietGetPolicyLink"));
-		assetTransactionContainer.add(getFileClaimLink("getJulietFileClaimLink"));
-//		assetTransactionContainer.add(getVehicleDetailsLink());
-
 		assetTransactionContainer.add(getManufacturerCarsListRefresingView("hondaCarsListRefresingView", "hondaCarIcon"));
 		assetTransactionContainer.add(getManufacturerCarsListRefresingView("toyotaCarsListRefresingView", "toyotaCarIcon"));
-		assetTransactionContainer.add(getCarsListContainer(MAJOR_WORLD_CONTAINER, "majorWorldCarsListRefresingView", "majorWorldCarIcon"));
 		assetTransactionContainer.add(getCarsListContainer(HILL_SIDE_CONTAINER, "hillsideCarsListRefresingView", "hillSIdeCarIcon"));
 		assetTransactionContainer.add(getCustomerAssetsRefreshingView(USAA_CONTAINER, "usaaCarsListRefresingView", "usaaCarIcon"));
 		assetTransactionContainer.add(getCustomerAssetsRefreshingView(GEIKO_CONTAINER, "geicoCarsListRefresingView", "geicoCarIcon"));
 		assetTransactionContainer.add(getCarsListContainer(EURO_AUTO_WORKS_CONTAINER, "euroAutoWorksCarsListRefresingView", "euroAutoWorksCarIcon"));
-		assetTransactionContainer.add(getCarsListContainer(AUTO_CARE_EAST_CONTAINER, "AutoCareEastCarsListRefresingView", "autoCareEastCarIcon"));
 
 		assetTransactionContainer.add(getCustomerAssetsRefreshingView(JACK_CONTAINER, "jackCarsListRefresingView", "johnCarIcon"));
 		assetTransactionContainer.add(getCustomerAssetsRefreshingView(ROSE_CONTAINER, "roseCarsListRefresingView", "samCarIcon"));
-		assetTransactionContainer.add(getCustomerAssetsRefreshingView(ROMEO_CONTAINER, "romeoCarsListRefresingView", "peterCarIcon"));
-		assetTransactionContainer.add(getCustomerAssetsRefreshingView(JULIET_CONTAINER, "julietCarsListRefresingView", "harryCarIcon"));
 
 		return assetTransactionContainer;
 	}
@@ -309,14 +332,6 @@ public class BlockchainDemoMainPage extends WebPage {
 					isVisible = true;
 				}
 				else if("getRoseGetPolicyLink".equalsIgnoreCase(id) && roseAssets != null && !roseAssets.isEmpty() && containsCar(roseAssets))
-				{
-					isVisible = true;
-				}
-				else if("getRomeoGetPolicyLink".equalsIgnoreCase(id) && romeoAssets != null && !romeoAssets.isEmpty() && containsCar(romeoAssets))
-				{
-					isVisible = true;
-				}
-				else if("getJulietGetPolicyLink".equalsIgnoreCase(id) && julietAssets != null && !julietAssets.isEmpty() && containsCar(julietAssets))
 				{
 					isVisible = true;
 				}
@@ -367,10 +382,12 @@ public class BlockchainDemoMainPage extends WebPage {
 							}
 
 							boolean buyInsuranceSuccess = BlockChainRestServiceHelper.buyInsurance(customerName, policy.getInsurer(), policy.getVehicleId());
+							//boolean buyInsuranceSuccess = MockBlockChainRestServiceHelper.buyInsurance(customerName, policy.getInsurer(), policy.getVehicleId());
 							
 							if(buyInsuranceSuccess)
 							{
 								CarDO insuredCar = BlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
+								//CarDO insuredCar = MockBlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
 
 								if(insuredCar != null && !StringHelper.isNullOrEmpty(insuredCar.getDigitalId()) && !StringHelper.isNullOrEmpty(insuredCar.getDigitalIdOwner()))
 								{
@@ -412,6 +429,8 @@ public class BlockchainDemoMainPage extends WebPage {
 									target.add(fileClaimLink);
 									target.add(assetTransactionContainer);
 									target.add(transactionDetailsRow);
+									target.add(jsloadingpanel);
+									target.appendJavaScript("document.getElementById('"+id+"').focus();");
 								}
 								else
 								{
@@ -445,9 +464,49 @@ public class BlockchainDemoMainPage extends WebPage {
 				getPolicyModalWindow.show(target);
 			}
 		};
+		getPolicyLink.setOutputMarkupPlaceholderTag(true);
+		getPolicyLink.setMarkupId(id);
 		return getPolicyLink;
 	}
+	
+	private Component getEmptyContainer(final String id) {
+		WebMarkupContainer getEmptyContainer = new WebMarkupContainer(id)
+		{
+			private static final long serialVersionUID = -737382470284736850L;
 
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+
+				boolean isVisible = true;
+
+				if("getJackEmptyContainer".equalsIgnoreCase(id) && jackAssets != null && !jackAssets.isEmpty() && containsCar(jackAssets))
+				{
+					isVisible = false;
+				}
+				else if("getRoseEmptyContainer".equalsIgnoreCase(id) && roseAssets != null && !roseAssets.isEmpty() && containsCar(roseAssets))
+				{
+					isVisible = false;
+				}
+
+				setVisibilityAllowed(isVisible);
+			}
+
+			private boolean containsCar(Set<IModel<AssetDO>> assets)
+			{
+				for(IModel<AssetDO> asset : assets)
+				{
+					if(asset.getObject() instanceof CarDO)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		};
+		return getEmptyContainer;
+	}
+	
 	private Set<IModel<AssetDO>> getCustomerAssets(String id)
 	{
 		Set<IModel<AssetDO>> customerAssets = new HashSet<IModel<AssetDO>>();
@@ -458,14 +517,6 @@ public class BlockchainDemoMainPage extends WebPage {
 		else if("getRoseGetPolicyLink".equalsIgnoreCase(id) || "getRoseFileClaimLink".equalsIgnoreCase(id))
 		{
 			customerAssets = roseAssets;
-		}
-		else if("getRomeoGetPolicyLink".equalsIgnoreCase(id) || "getRomeoFileClaimLink".equalsIgnoreCase(id))
-		{
-			customerAssets = romeoAssets;
-		}
-		else
-		{
-			customerAssets = julietAssets;
 		}
 
 		return customerAssets;
@@ -488,14 +539,6 @@ public class BlockchainDemoMainPage extends WebPage {
 					isVisible = true;
 				}
 				else if("getRoseFileClaimLink".equalsIgnoreCase(id) && containsInsuredCar(roseAssets))
-				{
-					isVisible = true;
-				}
-				else if("getRomeoFileClaimLink".equalsIgnoreCase(id) && containsInsuredCar(romeoAssets))
-				{
-					isVisible = true;
-				}
-				else if("getJulietFileClaimLink".equalsIgnoreCase(id) && containsInsuredCar(julietAssets))
 				{
 					isVisible = true;
 				}
@@ -545,9 +588,11 @@ public class BlockchainDemoMainPage extends WebPage {
 						try
 						{
 							TransactionEnum raiseClaimStatus = BlockChainRestServiceHelper.raiseClaim(customerName, policy.getInsurer(), policy.getVehicleId(), "metadata");
-
+							//TransactionEnum raiseClaimStatus = MockBlockChainRestServiceHelper.raiseClaim(customerName, policy.getInsurer(), policy.getVehicleId(), "metadata");
+							
 							CarDO claimRaisedCar = BlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
-
+							//CarDO claimRaisedCar = MockBlockChainRestServiceHelper.getVehicleDetails(policy.getVehicleId());
+							
 							if(TransactionEnum.VALID.equals(raiseClaimStatus))
 							{
 								if(claimRaisedCar != null && !StringHelper.isNullOrEmpty(claimRaisedCar.getDigitalId()) && !StringHelper.isNullOrEmpty(claimRaisedCar.getDigitalIdOwner()))
@@ -602,6 +647,8 @@ public class BlockchainDemoMainPage extends WebPage {
 								target.add(fileClaimModalpanelContent);
 								target.add(assetTransactionContainer);
 								target.add(transactionDetailsRow);
+								target.add(jsloadingpanel);
+								target.appendJavaScript("document.getElementById('"+id+"').focus();");
 							}
 							else if(TransactionEnum.FRAUDULENT.equals(raiseClaimStatus))
 							{
@@ -623,6 +670,7 @@ public class BlockchainDemoMainPage extends WebPage {
 									target.add(fileClaimModalpanelContent);
 									target.add(assetTransactionContainer);
 									target.add(transactionDetailsRow);
+									target.add(jsloadingpanel);
 								}
 								else
 								{
@@ -658,6 +706,8 @@ public class BlockchainDemoMainPage extends WebPage {
 			}
 		};
 		fileClaimLink.setOutputMarkupPlaceholderTag(true);
+		fileClaimLink.setMarkupId(id);
+		
 		return fileClaimLink;
 	}
 
@@ -768,10 +818,7 @@ public class BlockchainDemoMainPage extends WebPage {
 			@Override
 			protected Iterator<IModel<CarDO>> getItemModels()
 			{
-				if("majorWorldCarsListRefresingView".equalsIgnoreCase(refreshingViewId))
-				{
-					return majorWorldDealerCars.iterator();
-				}
+				
 				if("hillsideCarsListRefresingView".equalsIgnoreCase(refreshingViewId))
 				{
 					return hillsideDealerCars.iterator();
@@ -779,10 +826,6 @@ public class BlockchainDemoMainPage extends WebPage {
 				if("euroAutoWorksCarsListRefresingView".equalsIgnoreCase(refreshingViewId))
 				{
 					return euroWorksBodyShopCars.iterator();
-				}
-				if("AutoCareEastCarsListRefresingView".equalsIgnoreCase(refreshingViewId))
-				{
-					return autoCaresBodyShopCars.iterator();
 				}
 
 				return new HashSet<IModel<CarDO>>().iterator() ;
@@ -834,14 +877,6 @@ public class BlockchainDemoMainPage extends WebPage {
 				{
 					return roseAssets.iterator();
 				}
-				if("julietCarsListRefresingView".equalsIgnoreCase(refreshingViewId))
-				{
-					return julietAssets.iterator();
-				}
-				if("romeoCarsListRefresingView".equalsIgnoreCase(refreshingViewId))
-				{
-					return romeoAssets.iterator();
-				}
 				if("usaaCarsListRefresingView".equalsIgnoreCase(refreshingViewId))
 				{
 					return usaaAssets.iterator();
@@ -873,21 +908,34 @@ public class BlockchainDemoMainPage extends WebPage {
 				}
 				else if(item.getModelObject() instanceof PolicyDO)
 				{
-					assetIcon.add(new AttributeModifier("src", "resources/images/Policy.png"));
+					assetIcon.add(new AttributeModifier("src", "resources/images/Car_Insurance_Policy.png"));
 				}
 				else if(CUSTOMER_REFRESHING_VIEWS.contains(refreshingViewId))
 				{
 					assetIcon.add(new AttributeModifier("src", "resources/images/Policy-claim-ok.png"));
+					assetIcon.add(new AttributeModifier("style", " "));
 				}
 				else
 				{
-					assetIcon.add(new AttributeModifier("src", "resources/images/Policy-claim.png"));
+					assetIcon.add(new AttributeModifier("src", "resources/images/claim.png"));
 				}
 				item.add(assetIcon);
 			}
 		};
 		customerAssetsContainer.add(customerAssetsRefreshingView);
-
+		
+		if("jackContainer".equalsIgnoreCase(containerId))
+		{
+			customerAssetsContainer.add(getGetPolicyLink("getJackGetPolicyLink"));
+			customerAssetsContainer.add(getFileClaimLink("getJackFileClaimLink"));
+			customerAssetsContainer.add(getEmptyContainer("getJackEmptyContainer"));
+		}
+		else if(ROSE_CONTAINER.equalsIgnoreCase(containerId))
+		{
+			customerAssetsContainer.add(getGetPolicyLink("getRoseGetPolicyLink"));
+			customerAssetsContainer.add(getFileClaimLink("getRoseFileClaimLink"));
+			customerAssetsContainer.add(getEmptyContainer("getRoseEmptyContainer"));
+		}
 		return customerAssetsContainer;
 	}
 
@@ -956,34 +1004,22 @@ public class BlockchainDemoMainPage extends WebPage {
 				{
 					try
 					{
-						String transferTo = EMPTY_STRING;
-						if(MAJOR_WORLD_CONTAINER.equalsIgnoreCase(destination))
-						{
-							transferTo = MAJOR_WORLD;
-						}
-						else
-						{
-							transferTo = HILLSIDE_AUTOMALL;
-						}
+						String transferTo = HILLSIDE_AUTOMALL;
 
 						boolean isTransferSuccess = BlockChainRestServiceHelper.transferVehicle(source, transferTo, draggingCar.getVin(), "transfertodealer");
-
+						//boolean isTransferSuccess = MockBlockChainRestServiceHelper.transferVehicle(source, transferTo, draggingCar.getVin(), "transfertodealer");
+						
 						if(isTransferSuccess)
 						{
 							CarDO transferredVehicle = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
-
+							//CarDO transferredVehicle = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							
 							if(transferredVehicle != null)
 							{
 								isTransactionValid = true;
 
-								if(MAJOR_WORLD_CONTAINER.equalsIgnoreCase(destination))
-								{
-									majorWorldDealerCars.add(Model.of(transferredVehicle));
-								}
-								else
-								{
-									hillsideDealerCars.add(Model.of(transferredVehicle));
-								}
+								hillsideDealerCars.add(Model.of(transferredVehicle));
+
 								transaction.setTokenOwner(transferredVehicle.getVehicleOwner());
 								transaction.setVehicleOwner(transferredVehicle.getVehicleOwner());
 
@@ -1024,16 +1060,9 @@ public class BlockchainDemoMainPage extends WebPage {
 				{
 					try
 					{
-						String transferFrom = EMPTY_STRING;
+						String transferFrom = HILLSIDE_AUTOMALL;
 						String transferTo = EMPTY_STRING;
-						if(MAJOR_WORLD_CONTAINER.equalsIgnoreCase(source))
-						{
-							transferFrom = MAJOR_WORLD;
-						}
-						else
-						{
-							transferFrom = HILLSIDE_AUTOMALL;
-						}
+						
 
 						if(JACK_CONTAINER.equalsIgnoreCase(destination))
 						{
@@ -1043,21 +1072,15 @@ public class BlockchainDemoMainPage extends WebPage {
 						{
 							transferTo = ROSE;
 						}
-						else if(ROMEO_CONTAINER.equalsIgnoreCase(destination))
-						{
-							transferTo = ROMEO;
-						}
-						else
-						{
-							transferTo = JULIET;
-						}
 
 						boolean isTransferSuccess = BlockChainRestServiceHelper.transferVehicle(transferFrom, transferTo, draggingCar.getVin(), "transfertouser");
-
+						//boolean isTransferSuccess = MockBlockChainRestServiceHelper.transferVehicle(transferFrom, transferTo, draggingCar.getVin(), "transfertouser");
+						
 						if(isTransferSuccess)
 						{
 							CarDO transferredVehicle = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
-
+							//CarDO transferredVehicle = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							
 							if(transferredVehicle != null)
 							{
 								isTransactionValid = true;
@@ -1070,25 +1093,11 @@ public class BlockchainDemoMainPage extends WebPage {
 								{
 									roseAssets.add(Model.of((AssetDO) transferredVehicle));
 								}
-								else if(ROMEO_CONTAINER.equalsIgnoreCase(destination))
-								{
-									romeoAssets.add(Model.of((AssetDO) transferredVehicle));
-								}
-								else
-								{
-									julietAssets.add(Model.of((AssetDO) transferredVehicle));
-								}
 								transaction.setTokenOwner(transferredVehicle.getVehicleOwner());
 								transaction.setVehicleOwner(transferredVehicle.getVehicleOwner());
 
-								if(MAJOR_WORLD_CONTAINER.equalsIgnoreCase(source))
-								{
-									majorWorldDealerCars.remove(Model.of(draggingCar));
-								}
-								else
-								{
-									hillsideDealerCars.remove(Model.of(draggingCar));
-								}
+								hillsideDealerCars.remove(Model.of(draggingCar));
+
 								transaction.setTransactionKey(transferredVehicle.getLastTransaction());
 							}
 							else
@@ -1122,14 +1131,6 @@ public class BlockchainDemoMainPage extends WebPage {
 					{
 						seller = ROSE;
 					}
-					else if(ROMEO_CONTAINER.equalsIgnoreCase(source))
-					{
-						seller = ROMEO;
-					}
-					else
-					{
-						seller = JULIET;
-					}
 
 					if(JACK_CONTAINER.equalsIgnoreCase(destination))
 					{
@@ -1139,21 +1140,15 @@ public class BlockchainDemoMainPage extends WebPage {
 					{
 						buyer = ROSE;
 					}
-					else if(ROMEO_CONTAINER.equalsIgnoreCase(destination))
-					{
-						buyer = ROMEO;
-					}
-					else
-					{
-						buyer = JULIET;
-					}
 
 					try
 					{
 						TransactionEnum sellVehicleStatus = BlockChainRestServiceHelper.sellVehicle(seller, buyer, draggingCar.getVin());
-
+						//TransactionEnum sellVehicleStatus = MockBlockChainRestServiceHelper.sellVehicle(seller, buyer, draggingCar.getVin());
+						
 						CarDO soldCar = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
-
+						//CarDO soldCar = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+						
 						if(TransactionEnum.VALID.equals(sellVehicleStatus))
 						{
 							if(soldCar != null)
@@ -1171,14 +1166,6 @@ public class BlockchainDemoMainPage extends WebPage {
 								{
 									roseAssets.remove(Model.of((AssetDO) soldCar));
 								}
-								else if(ROMEO_CONTAINER.equalsIgnoreCase(source))
-								{
-									romeoAssets.remove(Model.of((AssetDO) soldCar));
-								}
-								else
-								{
-									julietAssets.remove(Model.of((AssetDO) soldCar));
-								}
 
 								if(JACK_CONTAINER.equalsIgnoreCase(destination))
 								{
@@ -1187,14 +1174,6 @@ public class BlockchainDemoMainPage extends WebPage {
 								else if(ROSE_CONTAINER.equalsIgnoreCase(destination))
 								{
 									roseAssets.add(Model.of((AssetDO) soldCar));
-								}
-								else if(ROMEO_CONTAINER.equalsIgnoreCase(destination))
-								{
-									romeoAssets.add(Model.of((AssetDO) soldCar));
-								}
-								else
-								{
-									julietAssets.add(Model.of((AssetDO) soldCar));
 								}
 
 								transaction.setTokenOwner(soldCar.getVehicleOwner());
@@ -1239,8 +1218,7 @@ public class BlockchainDemoMainPage extends WebPage {
 						errorMessageModalWindow.show(target);
 					}
 				}
-				else if(CUSTOMER_CONTAINERS.contains(source) && BODYSHOP_CONTAINERS.contains(destination) && (!euroWorksBodyShopCars.contains(Model.of(draggingCar)) 
-						&& !autoCaresBodyShopCars.contains(Model.of(draggingCar))))
+				else if(CUSTOMER_CONTAINERS.contains(source) && BODYSHOP_CONTAINERS.contains(destination) && (!euroWorksBodyShopCars.contains(Model.of(draggingCar))))
 				{
 					try
 					{
@@ -1256,11 +1234,13 @@ public class BlockchainDemoMainPage extends WebPage {
 						}
 
 						boolean certifyVehicleSuccess = BlockChainRestServiceHelper.certifyVehicle(bodyShop, draggingCar.getVin());
-
+						//boolean certifyVehicleSuccess = MockBlockChainRestServiceHelper.certifyVehicle(bodyShop, draggingCar.getVin());
+						
 						if(certifyVehicleSuccess)
 						{
 							CarDO certifiedCar = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
-
+							//CarDO certifiedCar = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							
 							if(certifiedCar != null)
 							{
 								isTransactionValid = true;
@@ -1273,10 +1253,6 @@ public class BlockchainDemoMainPage extends WebPage {
 								if(EURO_AUTO_WORKS_CONTAINER.equals(destination))
 								{
 									euroWorksBodyShopCars.add(Model.of(draggingCar));
-								}
-								else
-								{
-									autoCaresBodyShopCars.add(Model.of(draggingCar));	
 								}
 							}
 							else
@@ -1314,21 +1290,19 @@ public class BlockchainDemoMainPage extends WebPage {
 						}
 
 						boolean releaseTokenSuccess = BlockChainRestServiceHelper.releaseToken(insurer, draggingCar.getVehicleOwner(), draggingCar.getVin(), draggingCar.getDigitalId());
-
+						//boolean releaseTokenSuccess = MockBlockChainRestServiceHelper.releaseToken(insurer, draggingCar.getVehicleOwner(), draggingCar.getVin(), draggingCar.getDigitalId());
+						
 						if(releaseTokenSuccess)
 						{
 							CarDO tokenReleasedCar = BlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
-
+							//CarDO tokenReleasedCar = MockBlockChainRestServiceHelper.getVehicleDetails(draggingCar.getVin());
+							
 							if(tokenReleasedCar != null)
 							{
 								isTransactionValid = true;
 								if(EURO_AUTO_WORKS_CONTAINER.equalsIgnoreCase(source))
 								{
 									euroWorksBodyShopCars.remove(Model.of(tokenReleasedCar));
-								}
-								else
-								{
-									autoCaresBodyShopCars.remove(Model.of(tokenReleasedCar));
 								}
 
 
@@ -1354,14 +1328,7 @@ public class BlockchainDemoMainPage extends WebPage {
 											{
 												roseAssets.add(Model.of(asset));
 											}
-											else if(draggingCar.getVehicleOwner().equalsIgnoreCase(ROMEO))
-											{
-												romeoAssets.add(Model.of(asset));
-											}
-											else
-											{
-												julietAssets.add(Model.of(asset));
-											}
+											
 											usaaAssets.remove(Model.of(asset));
 										}
 									}
@@ -1383,14 +1350,7 @@ public class BlockchainDemoMainPage extends WebPage {
 											{
 												roseAssets.add(Model.of(asset));
 											}
-											else if(draggingCar.getVehicleOwner().equalsIgnoreCase(ROMEO))
-											{
-												romeoAssets.add(Model.of(asset));
-											}
-											else
-											{
-												julietAssets.add(Model.of(asset));
-											}
+											
 											geicoAssets.remove(Model.of(asset));
 										}
 									}
@@ -1427,6 +1387,7 @@ public class BlockchainDemoMainPage extends WebPage {
 
 					target.add(assetTransactionContainer);
 					target.add(transactionDetailsRow);
+					target.add(jsloadingpanel);
 				}
 				else
 				{
@@ -1439,11 +1400,7 @@ public class BlockchainDemoMainPage extends WebPage {
 
 	private String getDisplayName(String input) 
 	{
-		if(MAJOR_WORLD_CONTAINER.equalsIgnoreCase(input))
-		{
-			return MAJOR_WORLD;
-		}
-		else if(HILL_SIDE_CONTAINER.equalsIgnoreCase(input))
+		if(HILL_SIDE_CONTAINER.equalsIgnoreCase(input))
 		{
 			return HILLSIDE_AUTOMALL;
 		}
@@ -1459,10 +1416,6 @@ public class BlockchainDemoMainPage extends WebPage {
 		{
 			return EURO_AUTOWORKS;
 		}
-		else if(AUTO_CARE_EAST_CONTAINER.equalsIgnoreCase(input))
-		{
-			return AUTO_CARE_EAST;
-		}
 		else if(JACK_CONTAINER.equalsIgnoreCase(input) || JACK_REFRESHING_VIEW.equals(input))
 		{
 			return JACK;
@@ -1470,14 +1423,6 @@ public class BlockchainDemoMainPage extends WebPage {
 		else if(ROSE_CONTAINER.equalsIgnoreCase(input) || ROSE_REFRESHING_VIEW.equals(input))
 		{
 			return ROSE;
-		}
-		else if(ROMEO_CONTAINER.equalsIgnoreCase(input) || ROMEO_REFRESHING_VIEW.equals(input))
-		{
-			return ROMEO;
-		}
-		else if(JULIET_CONTAINER.equalsIgnoreCase(input) || JULIET_REFRESHING_VIEW.equals(input))
-		{
-			return JULIET;
 		}
 
 		return input;
@@ -1492,7 +1437,7 @@ public class BlockchainDemoMainPage extends WebPage {
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				BlockchainDemoMainPage.this.destination = destination;
+				BlockchainDemoMainPage_v2.this.destination = destination;
 			}
 		};
 	}
@@ -1518,12 +1463,58 @@ public class BlockchainDemoMainPage extends WebPage {
 				WebMarkupContainer transactionDetailsContainer = new WebMarkupContainer("transactionDetailsContainer");
 				if(TransactionEnum.FRAUDULENT.equals(item.getModelObject().getTransactionStatus()))
 				{
-					transactionDetailsContainer.add(new AttributeModifier("class", "error-transaction"));
+					transactionDetailsContainer.add(new AttributeModifier("class", "list-group-item error-transaction"));
 				}
 				if(TransactionEnum.INVALID.equals(item.getModelObject().getTransactionStatus()))
 				{
-					transactionDetailsContainer.add(new AttributeModifier("class", "error-transaction"));
+					transactionDetailsContainer.add(new AttributeModifier("class", "list-group-item error-transaction"));
 				}
+
+				try 
+				{
+					SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+					
+					Date d1 = format.parse(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(item.getModelObject().getId())));
+					Date d2 = Calendar.getInstance().getTime();
+
+					//in milliseconds
+					long diff = d2.getTime() - d1.getTime();
+
+					long diffSeconds = diff / 1000 % 60;
+					long diffMinutes = diff / (60 * 1000) % 60;
+					long diffHours = diff / (60 * 60 * 1000) % 24;
+					long diffDays = diff / (24 * 60 * 60 * 1000);
+					
+					StringBuffer whenItHappens = new StringBuffer();
+					
+					if(diffDays > 0)
+					{
+						whenItHappens.append(diffDays);
+						whenItHappens.append(" days, ");
+					}
+					if(diffHours > 0)
+					{
+						whenItHappens.append(diffHours);
+						whenItHappens.append(" hours, ");
+					}
+					if(diffMinutes > 0)
+					{
+						whenItHappens.append(diffMinutes);
+						whenItHappens.append(" minutes, ");
+					}
+					if(diffSeconds >= 0)
+					{
+						whenItHappens.append(diffSeconds);
+						whenItHappens.append(" seconds");
+					}
+					
+					transactionDetailsContainer.add(new Label("whenItHappens", Model.of(whenItHappens.toString())));
+					
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+					System.err.println(e.getMessage());
+				}
+
 				transactionDetailsContainer.add(new Label("block", Model.of(item.getModelObject().getTransactionType())));
 				transactionDetailsContainer.add(new Label("transactionTimeStamp", new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(item.getModelObject().getId()))));
 				transactionDetailsContainer.add(new Label("digitalId", Model.of(item.getModelObject().getInvolvingVehicle())));
@@ -1531,6 +1522,7 @@ public class BlockchainDemoMainPage extends WebPage {
 				transactionDetailsContainer.add(new Label("owner", Model.of(item.getModelObject().getTokenOwner())));
 				transactionDetailsContainer.add(new Label("transactionTo", Model.of(item.getModelObject().getTransactionDestination())));
 				transactionDetailsContainer.add(new Label("transactionId", Model.of(item.getModelObject().getTransactionKey())));
+				
 				item.add(transactionDetailsContainer);
 			}
 
@@ -1550,7 +1542,7 @@ public class BlockchainDemoMainPage extends WebPage {
 
 	private ModalWindow createGetPolicyModalWindow()
 	{
-		getPolicyModalWindow = new ModalWindow("getPolicyModalWindow")
+		getPolicyModalWindow = new CustomModalPanel("getPolicyModalWindow")
 		{
 			private static final long serialVersionUID = 9032816101409549762L;
 
@@ -1559,18 +1551,22 @@ public class BlockchainDemoMainPage extends WebPage {
 				super.onConfigure();
 				this.getContent().setOutputMarkupPlaceholderTag(true);
 			}
-		};
-
-		getPolicyModalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
-		{
-			private static final long serialVersionUID = -416489369844156238L;
-
+			
 			@Override
-			public boolean onCloseButtonClicked(AjaxRequestTarget target) 
-			{
-				return true;
+			public void show(AjaxRequestTarget target) {
+				super.show(target);
+				
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 300)");
 			}
-		});
+		};
 
 		getPolicyModalWindow.setTitle("Get Policy");
 		getPolicyModalWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
@@ -1587,8 +1583,8 @@ public class BlockchainDemoMainPage extends WebPage {
 			}
 		});
 
-		getPolicyModalWindow.setInitialHeight(150);
-		getPolicyModalWindow.setInitialWidth(300);
+		getPolicyModalWindow.setInitialHeight(183);
+		getPolicyModalWindow.setInitialWidth(420);
 		getPolicyModalWindow.setOutputMarkupPlaceholderTag(true);
 
 		return getPolicyModalWindow;
@@ -1596,17 +1592,23 @@ public class BlockchainDemoMainPage extends WebPage {
 
 	private ModalWindow createFileClaimModalWindow()
 	{
-		fileClaimModalWindow = new ModalWindow("fileClaimModalWindow");
-
-		fileClaimModalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
-		{
-			private static final long serialVersionUID = -416489369844156238L;
+		fileClaimModalWindow = new CustomModalPanel("fileClaimModalWindow") {
+			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean onCloseButtonClicked(AjaxRequestTarget target) {
-				return true;
+			public void show(AjaxRequestTarget target) {
+				super.show(target);
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 1000)");
 			}
-		});
+		};
 
 		fileClaimModalWindow.setTitle("File Claim");
 		fileClaimModalWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
@@ -1623,8 +1625,8 @@ public class BlockchainDemoMainPage extends WebPage {
 			}
 		});
 
-		fileClaimModalWindow.setInitialHeight(150);
-		fileClaimModalWindow.setInitialWidth(300);
+		fileClaimModalWindow.setInitialHeight(183);
+		fileClaimModalWindow.setInitialWidth(420);
 		fileClaimModalWindow.setOutputMarkupPlaceholderTag(true);
 
 		return fileClaimModalWindow;
@@ -1632,7 +1634,23 @@ public class BlockchainDemoMainPage extends WebPage {
 
 	private ModalWindow createRecallVehicleModalWindow()
 	{
-		getRecallVehicleModalWindow = new ModalWindow("getRecallVehicleModalWindow");
+		getRecallVehicleModalWindow = new CustomModalPanel("getRecallVehicleModalWindow") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void show(AjaxRequestTarget target) {
+				super.show(target);
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 1000)");
+			}
+		};
 
 		getRecallVehicleModalWindow.setTitle("Recall Vehicles");
 		getRecallVehicleModalWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
@@ -1648,8 +1666,11 @@ public class BlockchainDemoMainPage extends WebPage {
 			}
 		});
 
-		getRecallVehicleModalWindow.setInitialHeight(150);
-		getRecallVehicleModalWindow.setInitialWidth(300);
+		getRecallVehicleModalWindow.setInitialHeight(183);
+		getRecallVehicleModalWindow.setResizable(true);
+		getRecallVehicleModalWindow.setInitialWidth(570);
+		getRecallVehicleModalWindow.setMinimalHeight(183);
+		getRecallVehicleModalWindow.setMinimalWidth(570);
 		getRecallVehicleModalWindow.setOutputMarkupPlaceholderTag(true);
 
 		return getRecallVehicleModalWindow;
@@ -1657,18 +1678,23 @@ public class BlockchainDemoMainPage extends WebPage {
 	
 	private ModalWindow createErrorMessageModalWindow()
 	{
-		errorMessageModalWindow = new ModalWindow("errorMessageModalWindow");
-
-		errorMessageModalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
-		{
-			private static final long serialVersionUID = -416489369844156238L;
+		errorMessageModalWindow = new CustomModalPanel("errorMessageModalWindow"){
+			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean onCloseButtonClicked(AjaxRequestTarget target) 
-			{
-				return true;
+			public void show(AjaxRequestTarget target) {
+				super.show(target);
+//				target.appendJavaScript("setTimeout(function(){var thisWindow = Wicket.Window.get();\n"
+//	                    + "if (thisWindow) {\n"
+//						+ "var modalElement = document.querySelector('.wicket-modal'); \n"
+//	                    + "modalElement.style.removeProperty('top');\n"
+//	                    + "modalElement.style.removeProperty('left');\n"
+//	                    + "modalElement.style.removeProperty('position');\n"
+//	                    + "modalElement.style.setProperty('top', '25%');\n"
+//	                    + "modalElement.style.setProperty('left', '25%');\n"
+//	                    + "}}, 1000)");
 			}
-		});
+		};
 
 		errorMessageModalWindow.setTitle("Error");
 		errorMessageModalWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
@@ -1685,7 +1711,7 @@ public class BlockchainDemoMainPage extends WebPage {
 		});
 
 		errorMessageModalWindow.setInitialHeight(100);
-		errorMessageModalWindow.setInitialWidth(300);
+		errorMessageModalWindow.setInitialWidth(420);
 		errorMessageModalWindow.setOutputMarkupPlaceholderTag(true);
 
 		return errorMessageModalWindow;
@@ -1706,5 +1732,29 @@ public class BlockchainDemoMainPage extends WebPage {
 		}));
 
 		errorMessageModalWindow.setContent(errorDetailsModalWindowContent);
+	}
+	
+	private static final JavaScriptResourceReference JQUERY_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "jquery.min.js");
+	private static final JavaScriptResourceReference BOOTSTRAP_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "bootstrap.min.js");
+	private static final JavaScriptResourceReference METIS_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "metisMenu.min.js");
+	private static final JavaScriptResourceReference MORRIS_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "raphael.min.js");
+	private static final JavaScriptResourceReference RAPHAEL_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "morris.min.js");
+	private static final JavaScriptResourceReference MORRIS_DATA_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "morris-data.js");
+	private static final JavaScriptResourceReference SB_ADMIN_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "sb-admin-2.js");
+	private static final JavaScriptResourceReference SIMPLE_BAR_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "simplebar.js");
+	private static final JavaScriptResourceReference DRAG_DROP_JS = new JavaScriptResourceReference(BlockchainDemoMainPage_v2.class, "DragDropTouch.js");
+
+	@Override
+	public void renderHead(IHeaderResponse response) 
+	{
+	  response.render(JavaScriptReferenceHeaderItem.forReference(JQUERY_JS));
+	  response.render(JavaScriptReferenceHeaderItem.forReference(BOOTSTRAP_JS));
+	  response.render(JavaScriptReferenceHeaderItem.forReference(METIS_JS));
+	  response.render(JavaScriptReferenceHeaderItem.forReference(MORRIS_JS));
+	  response.render(JavaScriptReferenceHeaderItem.forReference(RAPHAEL_JS));
+	  response.render(JavaScriptReferenceHeaderItem.forReference(MORRIS_DATA_JS));
+	  response.render(JavaScriptReferenceHeaderItem.forReference(SB_ADMIN_JS));
+	  response.render(JavaScriptReferenceHeaderItem.forReference(SIMPLE_BAR_JS));
+	  response.render(JavaScriptReferenceHeaderItem.forReference(DRAG_DROP_JS));
 	}
 }

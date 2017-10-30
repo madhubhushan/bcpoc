@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" 
+xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  	<wicket:head>
+		  <wicket:link>
+		  	<link rel="shortcut icon" href="favicon.ico"/>
+		    <link rel="stylesheet" type="text/css" href="google-fonts.css" />
+		    <link rel="stylesheet" type="text/css" href="simplebar.css" />
+		    
+		  	<!-- Bootstrap Core CSS -->
+		    <link href="../vendor/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+		
+		    <!-- MetisMenu CSS -->
+		    <link href="../vendor/metisMenu/metisMenu.min.css" type="text/css" rel="stylesheet">
+		
+		    <!-- Morris Charts CSS -->
+		    <link href="../vendor/morrisjs/morris.css" type="text/css" rel="stylesheet">
+		
+		    <!-- Custom Fonts -->
+		    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		
+		    <!-- Custom CSS -->
+		    <link rel="stylesheet" type="text/css" href="BlockchainDemoMainPage_v1.css"/>
+		    <link href="../dist/css/sb-admin-2.css" type="text/css" rel="stylesheet">
+		
+		    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		    <!--[if lt IE 9]>
+		        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		    <![endif]-->
+		  </wicket:link>
+		  <!-- <script src="http://192.168.1.19:8080/target/target-script-min.js#windows"></script> -->
+	</wicket:head>
+</head>
+<body>
+	<div id="page-wrapper">
+		<div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                	<span>
+                		<img wicket:id="appIcon" src="bcpoc.png" style="width: 6%;">
+                	</span>
+                	<span>Vehicle Blockchain Dashboard</span>
+                </h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.first row -->
+		<div wicket:id="assetTransactionContainer">
+			<div class="row">  
+		        <div class="col-lg-3 col-md-6">
+		        	<div class="panel panel-blue">
+		          <div class="panel-heading panel-inside manufacturer_bg">
+		            <div class="col-lg-12 text-right">
+                        <span class="huge">Honda</span>
+                    </div>
+		            <div class="col-lg-12">
+			            <span wicket:id="hondaCarsListRefresingView">
+			               <img wicket:id="hondaCarIcon" src="Car.png" class="car-draggable" draggable="true" style="width: 45%; height: 45%">
+			            </span>
+		            </div>
+		          </div>
+		          <div class="panel-footer">
+                       <span class="pull-left"><a href="#" wicket:id="getHondaRecallVehicleLink"><i class="fa fa-arrow-circle-right"></i> Recall Vehicle</a></span>
+                       <span class="pull-right"><a href="#" wicket:id="createHondaCarLink"><i class="fa fa-plus-circle"></i> Create Vehicle</a></span>
+                       <div class="clearfix"></div>
+                  </div>
+		       	  </div>
+		        </div>
+		       	<div wicket:id="getRecallVehicleModalWindow"></div>
+		       	<div wicket:id="errorMessageModalWindow"></div>
+		        <div class="col-lg-3 col-md-6 hidden-sm hidden-xs">
+		          <div  class="panel panel-blue">
+			          <div class="panel-heading panel-inside manufacturer_bg">
+			            <div class="col-lg-12 text-right">
+			            	<span class="huge">Toyota</span>
+			            </div>
+			            <div class="col-lg-12">
+				            <span wicket:id="toyotaCarsListRefresingView">
+				              <img wicket:id="toyotaCarIcon" src="Car.png" class="car-draggable" draggable="true" style="width: 45%; height: 45%">
+				            </span>
+			            </div>
+			          </div>
+			          <div class="panel-footer">
+	                       <span class="pull-left"><a href="#" wicket:id="getToyotaRecallVehicleLink"><i class="fa fa-arrow-circle-right"></i> Recall Vehicle</a></span>
+	                       <span class="pull-right"><a href="#" wicket:id="createToyotaCarLink"><i class="fa fa-plus-circle"></i> Create Vehicle</a></span>
+	                       <div class="clearfix"></div>
+	                  </div>
+			        </div>
+		        </div>
+		      <div class="col-lg-3 col-md-6">
+		           <div wicket:id="hillsideContainer" class="panel panel-yellow car-draggable" draggable="true">
+		          	<div class="panel-heading panel-inside dealer_bg">
+                         <div class="col-lg-12 text-right">
+                             <div class="huge">Hillside Auto Mall</div>
+                         </div>
+                         <div class="col-lg-12">
+				            <span wicket:id="hillsideCarsListRefresingView">
+				              <img wicket:id="hillSIdeCarIcon" src="Car.png" class="car-draggable" draggable="true" style="width: 45%; height: 45%">
+				            </span>
+                         </div>
+                     </div>
+                     <div class="panel-footer">
+                         <span class="pull-left"><a href="#"><i class="fa fa-arrow-circle-right"></i> Sell Vehicle</a></span>
+                         <div class="clearfix"></div>
+                     </div>
+		          </div>	
+		      </div>
+		    <div class="col-lg-3 col-md-6">
+	          <div wicket:id="euroAutoWorksContainer" class="panel panel-magneta car-draggable" draggable="true" >
+	          	<div class="panel-heading panel-inside bodyshop_bg">
+                        <div class="col-lg-12 text-right">
+                            <div class="huge">Euro Auto Works</div>
+                        </div>
+                        <div class="col-lg-12">
+				            <span wicket:id="euroAutoWorksCarsListRefresingView">
+				              <img wicket:id="euroAutoWorksCarIcon" src="Car.png" class="car-draggable" draggable="true">
+				            </span>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <span class="pull-left"><a href="#"><i class="fa fa-arrow-circle-right"></i> Submit Repair</a></span>
+                        <div class="clearfix"></div>
+                    </div>
+	          	</div>
+		    </div>
+		   </div>
+		   <div class="row">
+		        <div class="col-lg-3 col-md-6">
+                    <div wicket:id="usaaContainer" class="panel panel-green car-draggable" draggable="true">
+	                    <div class="panel-heading panel-inside insurance_bg">
+	                       <div class="col-lg-12 text-right">
+	                           <div class="huge">Insurer1</div>
+	                       </div>
+	                       <div class="col-lg-12">
+	                           <span wicket:id="usaaCarsListRefresingView">
+					              <img wicket:id="usaaCarIcon" src="Car.png" class="car-draggable" draggable="true">
+					            </span>
+	                       </div>
+			          </div>
+                      <div class="panel-footer">
+                          <span class="pull-left"><a href="#"><i class="fa fa-arrow-circle-right"></i> List Vehicles</a></span>
+                          <div class="clearfix"></div>
+                      </div>
+		          </div>
+		        </div>
+		        <div class="col-lg-3 col-md-6 hidden-sm hidden-xs">
+		          <div wicket:id="geicoContainer" class="panel panel-green car-draggable" draggable="true" >
+		          	<div class="panel-heading panel-inside insurance_bg">
+		          		<div class="col-lg-12 text-right">
+                           <div class="huge">Insurer2</div>
+                       </div>
+                       <div class="col-lg-12">
+                           <span wicket:id="geicoCarsListRefresingView">
+				              <img wicket:id="geicoCarIcon" src="Car.png" class="car-draggable" draggable="true">
+				           </span>
+                       </div>
+		          </div>
+                  <div class="panel-footer">
+                      <span class="pull-left"><a href="#"><i class="fa fa-arrow-circle-right"></i> List Vehicles</a></span>
+                      <div class="clearfix"></div>
+                  </div>
+		        </div>
+		       </div>
+		    <div class="col-lg-3 col-md-6">
+		        <div wicket:id="jackContainer" class="panel panel-velvet car-draggable" draggable="true">
+                     <div class="panel-heading panel-inside car_owner_bg">
+                         <div class="col-lg-12 text-right">
+                             <div class="huge">Jack</div>
+                         </div>
+                         <div class="col-lg-12">
+                             <span wicket:id="jackCarsListRefresingView">
+					            <img wicket:id="johnCarIcon" src="Car.png" class="car-draggable" draggable="true" style="width: 45%; height: 45%">
+					          </span>
+                         </div>
+                     </div>
+                     <div class="panel-footer">
+                         <span class="pull-left"><a href="#" wicket:id="getJackGetPolicyLink"><i class="fa fa-check-circle"></i> Get Policy</a></span>
+                         <span class="pull-right"><a href="#" wicket:id="getJackFileClaimLink"><i class="fa fa-question-circle"></i> File Claim</a></span>
+                         <span class="pull-left"><span class="panel-footer" wicket:id="getJackEmptyContainer"></span></span>
+                         <div class="clearfix"></div>
+                     </div>
+		        </div>
+                <div wicket:id="getPolicyModalWindow"></div>
+                <div wicket:id="fileClaimModalWindow"></div>
+		      </div>
+		      <div class="col-lg-3 col-md-6 hidden-sm hidden-xs">
+		        <div wicket:id="roseContainer" class="panel panel-velvet car-draggable" draggable="true" >
+		        	<div class="panel-heading panel-inside car_owner_bg">
+                         <div class="col-lg-12 text-right">
+                             <div class="huge">Robert</div>
+                         </div>
+                         <div class="col-lg-12">
+					          <span wicket:id="roseCarsListRefresingView">
+					            <img wicket:id="samCarIcon" src="Car.png" class="car-draggable" draggable="true" style="width: 45%; height: 45%">
+					          </span>
+                         </div>
+                     </div>
+                     <div class="panel-footer">
+                         <span class="pull-left"><a href="#" wicket:id="getRoseGetPolicyLink"><i class="fa fa-check-circle"></i> Get Policy</a></span>
+                         <span class="pull-right"><a href="#" wicket:id="getRoseFileClaimLink"><i class="fa fa-question-circle"></i> File Claim</a></span>
+                         <span class="pull-left"><span class="panel-footer" wicket:id="getRoseEmptyContainer"></span></span>
+                         <div class="clearfix"></div>
+                     </div>
+		      	</div>
+		    </div>
+		   </div>
+		    <wicket:fragment wicket:id="vehicleDetailsModalWindowContentFragment">
+		    	<table>
+					<tr wicket:id="vehicleDetailsRefresingView">
+						<td wicket:id="vinNumber">Vin Number</td>
+						<td wicket:id="vehicleOwner">Vehicle Owner</td> 
+					</tr>
+				</table>
+		    </wicket:fragment>
+		    <wicket:fragment wicket:id="errorDetailsModalWindowContentFragment">
+				<span wicket:id="errorMessage" style="color:red;">Error Occured</span>
+		    </wicket:fragment>
+		  </div>
+		  <div class="row">
+		  		<div class="col-lg-4 col-lg-push-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-list fa-fw"></i> Transactions
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" style="background-color: #d5d5a9;" wicket:id="transactionDetailsRow">
+                            <div class="list-group" wicket:id="transactionDetailsRefresingView">
+                                <div class="list-group-item" wicket:id="transactionDetailsContainer">
+                                    <i class="fa fa-bookmark fa-fw"></i> <strong><span class="label_head" wicket:id="block">Transaction One </span></strong>
+                                    <span class="pull-right text-muted small"><em><span wicket:id="whenItHappens">4</span> ago</em></span>
+                                    <br /><br />
+                                    <div>
+								        <div class="row">
+								        	<div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
+								        		<label class="label_head">Digital ID : </label>&nbsp;<label class="label_content" wicket:id="digitalId">Did_254885</label>
+								        	</div>
+								        	<div class="col-lg-6 col-md-4 col-sm-4 col-xs-4">
+								        		<label class="label_head">Owner :  </label>&nbsp;<span wicket:id="owner" class="label label-success">Insurer 1</span>
+								        	</div>
+								        </div>
+								        <div class="row">
+								        	<div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
+								        		<label class="label_head">From :&nbsp;</label>&nbsp;<span wicket:id="transactionFrom" class="label label-primary">Customer</span>
+								        	</div>
+							            	<div class="col-lg-6 col-md-4 col-sm-4 col-xs-4">
+							            		<label class="label_head">To :&nbsp;</label>&nbsp;<span wicket:id="transactionTo" class="label label-primary">Insurer 1</span>
+							            	</div>
+							            </div>
+							            <div class="row">
+							            	<div class="col-lg-12 col-md-8 col-sm-8 col-xs-8">
+							            		<label class="label_head">Transaction Details :</label>&nbsp;<label class="label_content" wicket:id="transactionId">1255f-23fe3-112eec23a-558a65c</label>
+							            	</div>
+							            	<div class="col-lg-12 col-md-4 col-sm-4 col-xs-4">
+							            		<label class="label_head">Time : </label>&nbsp;<label class="label_content" wicket:id="transactionTimeStamp">112255887744</label>
+							            	</div>
+								        </div>
+								    </div>
+                                </div>
+                            </div>
+                            <!-- /.list-group -->
+                            <a href="#" class="btn btn-default btn-block">View All Transactions</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-4 -->
+                <div class="col-lg-8 col-lg-pull-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Sales - Policies - Claims Trend
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="morris-area-chart"></div>
+                            <div class="row" align="center">
+	                        	<div class="col-lg-4">
+	                        		<div style="border-color:#0b62a4; border-style: solid; background-color: #0b62a4"></div>
+	                        		<div style="color: #0b62a4">
+									  Sales
+									</div>
+	                        	</div>
+	                        	<div class="col-lg-4">
+	                        		<div style="border-color:#7A92A3; border-style: solid; background-color: #7A92A3"></div>
+									<div style="color: #7A92A3">
+									  Policies
+									</div>
+	                        	</div>
+	                        	<div class="col-lg-4">
+									<div style="border-color:#4da74d; border-style: solid; background-color: #4da74d"></div>
+									<div style="color: #4da74d">
+									  Claims
+									</div>
+	                        	</div>
+	                        </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->
+            </div>
+            <!-- /.row -->
+	</div>
+	<div wicket:id="jsloadingpanel"></div>
+</body>
+</html>
